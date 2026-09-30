@@ -21,7 +21,7 @@ const NAV_ITEMS = [
   { id: 'work', label: 'Work', icon: Briefcase },
   { id: 'services', label: 'Services', icon: Sparkles },
   { id: 'tech', label: 'Tech Stack', icon: Layers },
-  { id: 'blog', label: 'Blog', icon: BookOpen },
+  { id: 'blog', label: 'Milestones', icon: BookOpen },
   { id: 'contact', label: 'Contact', icon: Send },
 ];
 
@@ -53,7 +53,19 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
 
   return (
     <aside className="sidebar-tools-rail" aria-label="Floating Tools">
-      {/* Main Floating Pill Dock */}
+      {/* Desktop Top Action: Theme Toggle (atmost top in desktop view only) */}
+      <div className="tools-top-action-group">
+        <button
+          className="tool-icon-btn gear-btn theme-btn"
+          onClick={toggleTheme}
+          title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+          aria-label="Toggle Theme"
+        >
+          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+        </button>
+      </div>
+
+      {/* Main Floating Pill Dock (centered) */}
       <div className="tools-floating-dock">
         {/* Navigation List */}
         <nav className="dock-nav-items">
@@ -96,9 +108,10 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
         </nav>
       </div>
 
-      {/* Bottom Floating Control Buttons: Theme Toggle + Back To Top */}
+      {/* Bottom Action Group: Back To Top arrow (atmost last in desktop view) */}
       <div className="tools-bottom-action-group">
-        <div className="tools-gear-btn-wrap">
+        {/* Mobile/Tablet only theme toggle fallback (hidden on desktop) */}
+        <div className="tools-mobile-theme-wrap">
           <button
             className="tool-icon-btn gear-btn theme-btn"
             onClick={toggleTheme}
@@ -109,6 +122,7 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
           </button>
         </div>
 
+        {/* Back to Top Arrow button */}
         <div className={`tools-top-btn-wrap ${showTopBtn ? 'is-visible' : 'is-hidden'}`}>
           <button
             onClick={scrollToTop}

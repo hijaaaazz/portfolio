@@ -27,6 +27,13 @@ export default function WordReveal({
     const el = containerRef.current;
     if (!el) return;
 
+    // If already in or above viewport, reveal immediately
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
+      setIsVisible(true);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -35,8 +42,8 @@ export default function WordReveal({
         }
       },
       {
-        threshold,
-        rootMargin: '0px 0px -40px 0px',
+        threshold: 0,
+        rootMargin: '0px 0px 50px 0px',
       }
     );
 
@@ -53,7 +60,7 @@ export default function WordReveal({
       return parts.map((part, i) => {
         if (!part) return null;
         if (/^\s+$/.test(part)) {
-          return <span key={`${keyPrefix}-space-${i}`}> </span>;
+          return <span key={`${keyPrefix}-space-${i}`} className="word-reveal-space"> </span>;
         }
         const currentIdx = wordIndex++;
         const wordDelay = delay + currentIdx * stagger;

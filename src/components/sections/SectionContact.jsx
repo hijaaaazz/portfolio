@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { portfolioContent } from '../../data/portfolioContent';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import WordReveal from '../WordReveal';
+import emailjs from '@emailjs/browser';
 
 export default function SectionContact() {
   const { contact } = portfolioContent;
@@ -27,34 +28,56 @@ export default function SectionContact() {
     e.preventDefault();
     setStatus({ submitting: true, submitted: false, error: null });
 
-    try {
-      const urlEncoded = new URLSearchParams();
-      urlEncoded.append('name', formData.name);
-      urlEncoded.append('email', formData.email);
-      urlEncoded.append('subject', 'Portfolio Project Enquiry - Hijaz C');
-      urlEncoded.append('message', formData.message);
+    const serviceId =
+      import.meta.env.VITE_EMAILJS_SERVICE_ID ||
+      contact.emailjs?.serviceId;
+    const templateId =
+      import.meta.env.VITE_EMAILJS_TEMPLATE_ID ||
+      contact.emailjs?.templateId;
+    const publicKey =
+      import.meta.env.VITE_EMAILJS_PUBLIC_KEY ||
+      contact.emailjs?.publicKey;
 
-      await fetch(contact.formEndpoint, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: urlEncoded.toString(),
-        mode: 'no-cors',
+    if (!serviceId || !templateId || !publicKey) {
+      console.warn('EmailJS serviceId, templateId, or publicKey is missing.');
+      setStatus({
+        submitting: false,
+        submitted: false,
+        error: `Contact service is currently being refreshed. Please email directly to ${contact.email}.`,
       });
+      return;
+    }
+
+    try {
+      const templateParams = {
+        name: formData.name,
+        from_name: formData.name,
+        email: formData.email,
+        from_email: formData.email,
+        reply_to: formData.email,
+        message: formData.message,
+        to_email: contact.email || 'hijaz.fd@gmail.com',
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
       setStatus({ submitting: false, submitted: true, error: null });
       setFormData({ name: '', email: '', message: '' });
     } catch (err) {
-      console.error('Contact submission error:', err);
+      // Keep technical diagnostics in console for developer debugging
+      console.error('EmailJS submission error details:', err);
+
+      // Clean, polite message for visitors without exposing internal API diagnostics
       setStatus({
         submitting: false,
         submitted: false,
-        error: 'Failed to send message. Please reach out directly to mhcnkd4@gmail.com',
+        error: `Sorry, there was a temporary issue sending your message. Please email me directly at ${contact.email}.`,
       });
     }
   };
 
   return (
-    <section id="contact" className="section-block section-contact scroll-reveal">
+    <section id="contact" className="section-block section-contact">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Send size={14} className="tag-icon" />
@@ -75,8 +98,16 @@ export default function SectionContact() {
 
       {status.error && (
         <div className="form-alert error">
-          <AlertCircle size={18} />
-          <span>{status.error}</span>
+          <AlertCircle size={18} className="form-alert-icon" />
+          <div className="form-alert-body">
+            <span>{status.error}</span>
+            <a
+              href={`mailto:${contact.email}?subject=Project%20Enquiry%20from%20${encodeURIComponent(formData.name || 'Visitor')}&body=${encodeURIComponent(formData.message || '')}`}
+              className="form-alert-mailto-link"
+            >
+              Open in email app &rarr;
+            </a>
+          </div>
         </div>
       )}
 
@@ -108,16 +139,16 @@ export default function SectionContact() {
           />
         </div>
 
-        <div className="contact-underline-row">
-          <input
-            type="text"
+        <div className="contact-underline-row contact-underline-textarea-row">
+          <textarea
             id="contact-message"
             name="message"
             required
-            placeholder="Project Description"
+            rows={4}
+            placeholder="Project Description *"
             value={formData.message}
             onChange={handleChange}
-            className="contact-underline-input"
+            className="contact-underline-input contact-underline-textarea"
           />
         </div>
 

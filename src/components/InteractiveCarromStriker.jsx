@@ -307,19 +307,9 @@ export default function InteractiveCarromStriker({ isDark = true }) {
   };
 
   useEffect(() => {
+    // Keep bounds fresh on resize
     const handleResize = () => {
-      const b = getBounds();
-      boundsRef.current = b;
-      if (!isDraggingRef.current) {
-        let clamped = false;
-        if (posRef.current.x < b.minX) { posRef.current.x = b.minX; clamped = true; }
-        if (posRef.current.x > b.maxX) { posRef.current.x = b.maxX; clamped = true; }
-        if (posRef.current.y < b.minY) { posRef.current.y = b.minY; clamped = true; }
-        if (posRef.current.y > b.maxY) { posRef.current.y = b.maxY; clamped = true; }
-        if (clamped) {
-          setRenderPos(prev => ({ ...prev, x: posRef.current.x, y: posRef.current.y }));
-        }
-      }
+      boundsRef.current = getBounds();
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);

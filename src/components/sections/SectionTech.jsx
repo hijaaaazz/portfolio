@@ -52,7 +52,7 @@ export default function SectionTech() {
   ];
 
   return (
-    <section ref={sectionRef} id="tech" className="section-block section-tech scroll-reveal">
+    <section ref={sectionRef} id="tech" className="section-block section-tech">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Layers size={14} className="tag-icon" />

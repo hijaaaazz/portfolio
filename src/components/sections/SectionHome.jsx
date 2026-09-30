@@ -97,7 +97,7 @@ export default function SectionHome({ theme }) {
   ];
 
   return (
-    <section id="home" className="section-home scroll-reveal">
+    <section id="home" className="section-home">
       {/* Full Section Background Interactive DotField Canvas */}
       <div className="section-home-dotfield-bg" aria-hidden="true">
         <DotField
@@ -144,11 +144,8 @@ export default function SectionHome({ theme }) {
       <div className="home-headline-box">
         <WordReveal as="h1" className="home-giant-title" stagger={0.06} delay={0.05}>
           I’m building{' '}
-          <span className="badge-pill-neon animated-pill">mobile apps</span>
-          <br />
-          <span className="badge-pill-dark animated-pill">& scalable systems</span> that people
-          <br />
-          remember
+          <span className="badge-pill-neon animated-pill">mobile apps</span>{' '}
+          <span className="badge-pill-dark animated-pill">&amp; scalable systems</span> that people remember
         </WordReveal>
       </div>
 

@@ -12,7 +12,7 @@ export default function FooterIsak({ theme = 'dark' }) {
   };
 
   return (
-    <footer className="footer-isak scroll-reveal">
+    <footer className="footer-isak">
       {/* Massive Handwritten Signature Wordmark - Vector Traced with Scroll Reveal Animation */}
       <div className="footer-signature-area">
         <div className="signature-inner-wrapper">

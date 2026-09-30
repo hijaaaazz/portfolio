@@ -101,7 +101,7 @@ export default function SectionEducation() {
   ];
 
   return (
-    <section ref={sectionRef} id="education" className="section-block section-education flat-spacing scroll-reveal">
+    <section ref={sectionRef} id="education" className="section-block section-education flat-spacing">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Briefcase size={14} className="tag-icon" />

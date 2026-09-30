@@ -5,6 +5,7 @@ import WordReveal from '../WordReveal';
 
 export default function SectionServices() {
   const [openIndex, setOpenIndex] = useState(0);
+  const [stackedOpenMap, setStackedOpenMap] = useState({});
 
   const servicesData = [
     {
@@ -34,8 +35,15 @@ export default function SectionServices() {
     setOpenIndex(openIndex === idx ? -1 : idx);
   };
 
+  const toggleStacked = (idx) => {
+    setStackedOpenMap((prev) => ({
+      ...prev,
+      [idx]: !prev[idx],
+    }));
+  };
+
   return (
-    <section id="services" className="section-block section-services scroll-reveal">
+    <section id="services" className="section-block section-services">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Sparkles size={14} className="tag-icon" />
@@ -68,9 +76,13 @@ export default function SectionServices() {
 
               {/* Accordion Collapsible Content with smooth expand & shrink animation */}
               <div className="service-template-collapsible">
-                <div className="service-template-content-inner">
+                <div className={`service-template-content-inner ${stackedOpenMap[idx] ? 'is-stacked-open' : ''}`}>
                   {/* Dual Image Showcase with Isak reference design */}
-                  <div className="service-template-images-grid">
+                  <div
+                    className="service-template-images-grid"
+                    onClick={() => toggleStacked(idx)}
+                    title="Click or hover to reveal cards"
+                  >
                     {item.images.map((img, iIdx) => (
                       <div key={iIdx} className="service-template-image-card">
                         <div className="service-template-wrap-image">

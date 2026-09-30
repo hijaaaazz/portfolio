@@ -69,7 +69,7 @@ export default function SectionAbout() {
   }, [hoveredIndex]);
 
   return (
-    <section id="about" className="section-block section-about flat-spacing scroll-reveal">
+    <section id="about" className="section-block section-about flat-spacing">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <User size={14} className="tag-icon" />
@@ -78,7 +78,7 @@ export default function SectionAbout() {
 
       {/* Main Narrative Heading */}
       <WordReveal as="h2" className="section-heading-large" stagger={0.04} delay={0.05}>
-        Engineering scalable mobile apps<br className="d-none-mobile" /> with Flutter, clean architecture,<br className="d-none-mobile" /> and robust code
+        Engineering scalable mobile apps with Flutter, clean architecture, and robust code
       </WordReveal>
 
       {/* Narrative Description without boxed division */}
