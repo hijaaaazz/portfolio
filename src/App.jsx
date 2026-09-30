@@ -25,39 +25,25 @@ export default function App() {
     localStorage.setItem('isak_theme', theme);
   }, [theme]);
 
-  // Handle scrollRestoration and direct hash landings cleanly
+  // Handle scrollRestoration cleanly
   useEffect(() => {
     if ('scrollRestoration' in window.history) {
-      // If there's a hash, use manual restoration so the browser doesn't jump to an unstyled/stale offset
-      if (window.location.hash) {
-        window.history.scrollRestoration = 'manual';
-      } else {
-        window.history.scrollRestoration = 'auto';
-      }
+      // Natural browser restoration: do not force jumps or movement on refresh
+      window.history.scrollRestoration = 'auto';
     }
   }, []);
 
-  // Initial load & scroll entrance observer matching reference website
+  // Reveal elements on scroll without shifting layout
   useEffect(() => {
-    const hash = window.location.hash;
-    const targetElement = hash ? document.querySelector(hash) : null;
-
     const reveals = document.querySelectorAll('.scroll-reveal');
 
-    // If loaded directly with a section hash (e.g. #tech), reveal preceding and target elements immediately
-    // to prevent translateY(28px) entrance transform from shifting the browser's scroll anchor downwards
-    if (targetElement) {
-      reveals.forEach((el) => {
-        if (el.compareDocumentPosition(targetElement) & Node.DOCUMENT_POSITION_PRECEDING || el === targetElement) {
-          el.classList.add('is-revealed');
-        }
-      });
-
-      // Align cleanly to the target section after DOM layout is stable
-      requestAnimationFrame(() => {
-        targetElement.scrollIntoView({ behavior: 'instant', block: 'start' });
-      });
-    }
+    // Reveal elements immediately that are already in/above the current scroll view on reload
+    reveals.forEach((el) => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 100) {
+        el.classList.add('is-revealed');
+      }
+    });
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -69,8 +55,8 @@ export default function App() {
         });
       },
       {
-        threshold: 0.08,
-        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.05,
+        rootMargin: '0px 0px 50px 0px',
       }
     );
 

@@ -27,9 +27,12 @@ const NAV_ITEMS = [
 
 export default function SidebarTools({ theme = 'light', toggleTheme }) {
   const [activeSection, setActiveSection] = useState('home');
+  const [showTopBtn, setShowTopBtn] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
+      setShowTopBtn(window.scrollY > 300);
+
       const scrollPosition = window.scrollY + 280;
       for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
         const section = document.getElementById(NAV_ITEMS[i].id);
@@ -50,18 +53,6 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
 
   return (
     <aside className="sidebar-tools-rail" aria-label="Floating Tools">
-      {/* Top Setting / Configuration Icon */}
-      <div className="tools-gear-btn-wrap">
-        <button
-          className="tool-icon-btn gear-btn theme-btn"
-          onClick={toggleTheme}
-          title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-          aria-label="Toggle Theme"
-        >
-          {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-        </button>
-      </div>
-
       {/* Main Floating Pill Dock */}
       <div className="tools-floating-dock">
         {/* Navigation List */}
@@ -105,16 +96,29 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
         </nav>
       </div>
 
-      {/* Back To Top Button Floating Pill */}
-      <div className="tools-top-btn-wrap">
-        <button
-          onClick={scrollToTop}
-          className="tool-icon-btn gear-btn top-btn"
-          title="Back to Top"
-          aria-label="Back to Top"
-        >
-          <ArrowUp size={18} />
-        </button>
+      {/* Bottom Floating Control Buttons: Theme Toggle + Back To Top */}
+      <div className="tools-bottom-action-group">
+        <div className="tools-gear-btn-wrap">
+          <button
+            className="tool-icon-btn gear-btn theme-btn"
+            onClick={toggleTheme}
+            title={theme === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+            aria-label="Toggle Theme"
+          >
+            {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
+          </button>
+        </div>
+
+        <div className={`tools-top-btn-wrap ${showTopBtn ? 'is-visible' : 'is-hidden'}`}>
+          <button
+            onClick={scrollToTop}
+            className="tool-icon-btn gear-btn top-btn"
+            title="Back to Top"
+            aria-label="Back to Top"
+          >
+            <ArrowUp size={18} />
+          </button>
+        </div>
       </div>
     </aside>
   );

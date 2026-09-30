@@ -3,6 +3,7 @@ import { portfolioContent } from '../../data/portfolioContent';
 import { Globe } from 'lucide-react';
 import DotField from '../DotField';
 import WordReveal from '../WordReveal';
+import InteractiveCarromStriker from '../InteractiveCarromStriker';
 
 function useCounter(target, isVisible, duration = 1400) {
   const [count, setCount] = useState(0);
@@ -151,33 +152,9 @@ export default function SectionHome({ theme }) {
         </WordReveal>
       </div>
 
-      {/* Circular Rotating Wireframe Stamp Showcase */}
+      {/* Circular Rotating Wireframe Stamp Showcase - Interactive Carrom Striker */}
       <div className="home-stamp-showcase">
-        <div className="circular-stamp-container">
-          <div className="stamp-rotating-text-ring">
-            <svg viewBox="0 0 160 160" className="stamp-svg-ring">
-              <defs>
-                <path
-                  id="stampCirclePath"
-                  d="M 80, 80 m -62, 0 a 62,62 0 1,1 124,0 a 62,62 0 1,1 -124,0"
-                />
-              </defs>
-              <text fontSize="10.5" fontWeight="700" letterSpacing="3.5">
-                <textPath href="#stampCirclePath">
-                  AWARD WINNING • SINCE 2024 • MOBILE APPS • FLUTTER •
-                </textPath>
-              </text>
-            </svg>
-          </div>
-
-          {/* Concentric Wireframe 3D Ellipses in Center matching reference */}
-          <div className="stamp-center-wireframe">
-            <div className="ellipse-ring e1" />
-            <div className="ellipse-ring e2" />
-            <div className="ellipse-ring e3" />
-            <div className="ellipse-ring e4" />
-          </div>
-        </div>
+        <InteractiveCarromStriker isDark={isDark} />
       </div>
 
       {/* Metric Counters Grid with count-up animation */}

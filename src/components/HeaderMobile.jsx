@@ -14,19 +14,25 @@ const NAV_ITEMS = [
 ];
 
 export default function HeaderMobile({ theme = 'light', toggleTheme }) {
-  const [currentTime, setCurrentTime] = useState('');
+  const [currentDateTime, setCurrentDateTime] = useState({ date: 'Tue, Sep 29', time: '20:32' });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      const options = {
+      const dateStr = now.toLocaleDateString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        timeZone: 'Asia/Kolkata',
+      });
+      const timeStr = now.toLocaleTimeString('en-US', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true,
+        hour12: false,
         timeZone: 'Asia/Kolkata',
-      };
-      setCurrentTime(now.toLocaleTimeString('en-US', options));
+      });
+      setCurrentDateTime({ date: dateStr, time: timeStr });
     };
 
     updateClock();
@@ -35,43 +41,30 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
   }, []);
 
   return (
-    <header className="mobile-header-bar">
-      {/* Brand logo (visible on mobile/tablet) */}
+    <header className="mobile-floating-header">
+      {/* Top Left Floating Brand Mark */}
       <a
         href="#home"
-        className="mobile-brand"
+        className="mobile-floating-brand"
         onClick={(e) => {
           e.preventDefault();
           window.scrollTo({ top: 0, behavior: 'smooth' });
           history.pushState(null, '', '#home');
         }}
+        aria-label="Hijaz C Home"
       >
-        <HLogo size={24} theme={theme} />
-        <span className="mobile-brand-title">Hijaz C</span>
+        <HLogo size={36} theme={theme} />
       </a>
 
-      {/* Live Time Indicator */}
-      <div className="mobile-clock-pill">
-        <MapPin size={12} className="clock-icon-pin" />
-        <span className="clock-location">Kerala, IN</span>
-        <span className="clock-sep">•</span>
-        <Clock size={12} className="clock-icon" />
-        <span className="clock-time">{currentTime || '12:00 PM'}</span>
-      </div>
+      {/* Top Right Floating Controls: Date/Time + Menu */}
+      <div className="mobile-floating-right">
+        <div className="mobile-floating-datetime">
+          <span className="floating-date-txt">{currentDateTime.date}</span>
+          <span className="floating-time-txt">{currentDateTime.time}</span>
+        </div>
 
-      <div className="mobile-header-actions">
-        {/* Theme switch button */}
         <button
-          className="mobile-theme-toggle"
-          onClick={toggleTheme}
-          aria-label="Toggle Theme"
-        >
-          {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
-        </button>
-
-        {/* Mobile Menu Hamburger */}
-        <button
-          className="mobile-hamburger-btn"
+          className={`mobile-floating-menu-btn ${mobileMenuOpen ? 'open' : ''}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle Navigation Menu"
         >
@@ -79,32 +72,19 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
         </button>
       </div>
 
-      {/* Mobile Drawer Overlay */}
+      {/* Floating Glass Dropdown Menu Matching Reference */}
       {mobileMenuOpen && (
-        <div className="mobile-menu-modal" onClick={() => setMobileMenuOpen(false)}>
+        <div className="mobile-dropdown-backdrop" onClick={() => setMobileMenuOpen(false)}>
           <div
-            className="mobile-menu-drawer"
+            className="mobile-floating-dropdown-card"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mobile-drawer-header">
-              <div className="drawer-brand">
-                <HLogo size={24} theme={theme} />
-                <span>Hijaz C</span>
-              </div>
-              <button
-                className="drawer-close-btn"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <nav className="mobile-drawer-links">
-              {NAV_ITEMS.map((item, idx) => (
+            <nav className="mobile-dropdown-nav">
+              {NAV_ITEMS.map((item) => (
                 <a
-                  key={idx}
+                  key={item.id}
                   href={`#${item.id}`}
-                  className="mobile-drawer-link"
+                  className="mobile-dropdown-link"
                   onClick={(e) => {
                     e.preventDefault();
                     setMobileMenuOpen(false);
@@ -120,21 +100,10 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
                     }
                   }}
                 >
-                  <span>{item.label}</span>
-                  <ArrowUpRight size={16} className="drawer-arrow" />
+                  <span className="dropdown-link-label">{item.label}</span>
                 </a>
               ))}
             </nav>
-
-            <div className="mobile-drawer-footer">
-              <a
-                href="#contact"
-                className="drawer-cta-btn"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Let’s Talk Together
-              </a>
-            </div>
           </div>
         </div>
       )}

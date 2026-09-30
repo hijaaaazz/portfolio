@@ -175,6 +175,12 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
         {/* Bottom Content Area */}
         <div className="sidebar-bottom-content">
+          {/* Inline Available for Work indicator matching reference screenshot */}
+          <div className="sidebar-avail-inline-pill" aria-label="Available for Work">
+            <span className="avail-pulse-dot" />
+            <span className="avail-inline-text">Available for Work</span>
+          </div>
+
           {/* Typewriter headline */}
           <div className="sidebar-intro-headline">
             <span className="intro-prefix">Hey, I'm </span>
