@@ -11,6 +11,7 @@ import SectionTech from './components/sections/SectionTech';
 import SectionBlog from './components/sections/SectionBlog';
 import SectionContact from './components/sections/SectionContact';
 import FooterIsak from './components/FooterIsak';
+import DotField from './components/DotField';
 import './App.css';
 
 export default function App() {
@@ -107,6 +108,8 @@ export default function App() {
 
   const [activeProject, setActiveProject] = useState(null);
 
+  const isDark = theme !== 'light';
+
   return (
     <div className="isak-layout-wrapper" data-theme={theme}>
       {/* Ambient background mesh & lights */}
@@ -115,6 +118,24 @@ export default function App() {
         <div className="ambient-glow glow-middle" />
         <div className="ambient-glow glow-bottom" />
         <div className="ambient-grid-overlay" />
+      </div>
+
+      {/* Full-width interactive DotField canvas spanning across entire Home section, sidebars, user & nav */}
+      <div className="home-viewport-dotfield-bg" aria-hidden="true">
+        <DotField
+          dotRadius={isDark ? 1.75 : 1.4}
+          dotSpacing={14}
+          cursorRadius={450}
+          cursorForce={0.1}
+          bulgeOnly={true}
+          bulgeStrength={65}
+          glowRadius={170}
+          sparkle={false}
+          waveAmplitude={0}
+          gradientFrom={isDark ? "rgba(0, 255, 115, 0.65)" : "rgba(15, 23, 42, 0.38)"}
+          gradientTo={isDark ? "rgba(0, 222, 81, 0.42)" : "rgba(30, 41, 59, 0.18)"}
+          glowColor={isDark ? "rgba(0, 255, 115, 0.45)" : "rgba(15, 23, 42, 0.22)"}
+        />
       </div>
 
       {/* Mobile / Tablet Header Bar */}

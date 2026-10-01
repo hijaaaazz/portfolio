@@ -64,7 +64,7 @@ export default function SectionEducation() {
       role: 'Flutter Developer',
       company: 'Madariz Impex Pvt. Ltd.',
       description:
-        'Collaborated on the development and maintenance of Filumart, a global B2B e-commerce platform on Android and iOS. Built product listing, order management, authentication, FCM push notifications, WebSockets, biometric auth, and managed Google Play & App Store releases.',
+        'Worked on the development and maintenance of Filumart, a global B2B e-commerce platform for Android and iOS. Built product listing, order management, authentication, FCM push notifications, WebSockets, and biometric authentication, and managed Google Play and App Store releases.',
       icon: (
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
@@ -127,7 +127,7 @@ export default function SectionEducation() {
                 className="timeline-entry-row"
               >
                 <span className="timeline-entry-date">{item.period}</span>
-                
+
                 <div className="timeline-entry-dot" />
 
                 <div className="timeline-entry-body">

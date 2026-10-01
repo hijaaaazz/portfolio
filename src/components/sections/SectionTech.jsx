@@ -28,14 +28,14 @@ export default function SectionTech() {
     {
       name: 'Flutter & Dart',
       duty: 'Cross-platform mobile apps',
-      percent: 92,
+      percent: 90,
       iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
     },
     {
-      name: 'React.js & JavaScript',
-      duty: 'Interactive web applications',
+      name: 'Firebase & Cloud',
+      duty: 'Auth, Firestore, Realtime DB, Storage, Hosting & FCM',
       percent: 90,
-      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg',
+      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
     },
     {
       name: 'Figma',
@@ -48,6 +48,7 @@ export default function SectionTech() {
       duty: 'Version control & collaboration',
       percent: 88,
       iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
+      isGithub: true,
     },
   ];
 
@@ -72,7 +73,7 @@ export default function SectionTech() {
                 <img
                   src={item.iconSrc}
                   alt={item.name}
-                  className="tech-template-icon"
+                  className={`tech-template-icon ${item.isGithub ? 'tech-icon-github' : ''}`}
                 />
               </div>
               <div className="tech-template-meta">
@@ -81,7 +82,7 @@ export default function SectionTech() {
               </div>
             </div>
 
-            {/* Pill Progress Bar with Percentage Inside matching screenshot */}
+            {/* Pill Progress Bar */}
             <div className="tech-template-progress-wrap">
               <div
                 className="tech-template-progress-bar"

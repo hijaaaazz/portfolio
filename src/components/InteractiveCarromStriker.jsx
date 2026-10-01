@@ -86,7 +86,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
     const dotRect = dotfieldEl.getBoundingClientRect();
     const stampRect = containerRef.current.getBoundingClientRect();
 
-    const strikerRadius = (stampRect.width && stampRect.width > 0) ? stampRect.width / 2 : 68;
+    const strikerRadius = (stampRect.width && stampRect.width > 0) ? stampRect.width / 2 : 84;
     const anchorX = stampRect.left - posRef.current.x;
     const anchorY = stampRect.top - posRef.current.y;
 
@@ -111,7 +111,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
   const triggerSpark = (x, y, vx, vy) => {
     const id = Math.random();
     const stampEl = containerRef.current;
-    const radius = stampEl ? stampEl.offsetWidth / 2 : 68;
+    const radius = stampEl ? stampEl.offsetWidth / 2 : 84;
     const newSpark = { id, x: x + radius, y: y + radius, vx, vy };
     setSparks((prev) => [...prev.slice(-6), newSpark]);
     setTimeout(() => {
@@ -206,11 +206,17 @@ export default function InteractiveCarromStriker({ isDark = true }) {
           rot: angleRef.current,
         });
       } else {
-        // While dragging: striker stays completely anchored, only ambient rotate
+        // While dragging: striker responds with elastic pull (moves with cursor pull)
         angleRef.current += 0.15;
+        const dragV = dragVectorRef.current;
+        const pullOffset = dragV ? {
+          x: Math.min(Math.max(-dragV.dx * 0.25, -35), 35),
+          y: Math.min(Math.max(-dragV.dy * 0.25, -35), 35),
+        } : { x: 0, y: 0 };
+
         setRenderPos({
-          x: posRef.current.x,
-          y: posRef.current.y,
+          x: posRef.current.x + pullOffset.x,
+          y: posRef.current.y + pullOffset.y,
           rot: angleRef.current,
         });
       }
@@ -366,7 +372,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
       {/* Power HUD Indicator */}
       {isAiming && (
         <div className="striker-power-hud">
-          <span>STRIKE</span>
+         
           <div className="hud-bar-track">
             <div className="hud-bar-fill" style={{ width: `${powerPct}%` }} />
           </div>
@@ -401,7 +407,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
           </defs>
           <text fontSize="10.5" fontWeight="700" letterSpacing="3.5">
             <textPath href="#stampCirclePath">
-              AWARD WINNING • SINCE 2024 • MOBILE APPS • FLUTTER •
+            MOBILE APP DEVELOPER • FLUTTER • UI/UX •
             </textPath>
           </text>
         </svg>
@@ -417,11 +423,11 @@ export default function InteractiveCarromStriker({ isDark = true }) {
       </div>
 
       {/* Flick Me Tooltip when idle */}
-      {!isAiming && Math.hypot(velRef.current.x, velRef.current.y) < 1 && (
+      {/* {!isAiming && Math.hypot(velRef.current.x, velRef.current.y) < 1 && (
         <div className="striker-drag-hint">
           <span>flick me</span>
         </div>
-      )}
+      )} */}
     </div>
   );
 }

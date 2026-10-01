@@ -59,6 +59,20 @@ export function InstagramIcon({ size = 18, className = "" }) {
   );
 }
 
+export function MediumIcon({ size = 18, className = "" }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="currentColor"
+      className={className}
+    >
+      <path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795h6.633v.403l-1.92 1.84c-.167.14-.247.35-.213.565v10.514c-.034.216.046.425.213.565l1.88 1.84v.403h-9.537v-.403l1.933-1.87c.19-.19.19-.247.19-.536V8.67l-5.38 13.66h-.726L3.923 8.67v8.016c-.053.385.077.77.348 1.042l2.518 3.053v.403H0v-.403l2.518-3.053c.27-.272.383-.657.328-1.042V6.887z" />
+    </svg>
+  );
+}
+
 export function WhatsAppIcon({ size = 18, className = "" }) {
   return (
     <svg

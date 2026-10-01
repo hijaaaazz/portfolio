@@ -10,20 +10,10 @@ import {
 } from './SocialIcons';
 
 const ROLES = [
-  'Flutter Developer',
-  'Mobile Engineer',
-  'BLoC Specialist',
-  'Cross-Platform Architect'
+  'Mobile App Developer',
+  'UI/UX Designer',
+  'App Release Manager',
 ];
-
-// Twitter / X icon
-function XIcon({ size = 16 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-    </svg>
-  );
-}
 
 // LinkedIn icon
 function LinkedInIcon({ size = 16 }) {
@@ -34,14 +24,20 @@ function LinkedInIcon({ size = 16 }) {
   );
 }
 
-// Portfolio / Grid icon  
-function GridIcon({ size = 16 }) {
+// GitHub icon
+function GitHubIcon({ size = 16 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <rect x="3" y="3" width="7" height="7" rx="1"/>
-      <rect x="14" y="3" width="7" height="7" rx="1"/>
-      <rect x="3" y="14" width="7" height="7" rx="1"/>
-      <rect x="14" y="14" width="7" height="7" rx="1"/>
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path fillRule="evenodd" clipRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+    </svg>
+  );
+}
+
+// Medium letter M icon
+function MediumIcon({ size = 16 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.795 4.728-11.795h6.633v.403l-1.92 1.84c-.167.14-.247.35-.213.565v10.514c-.034.216.046.425.213.565l1.88 1.84v.403h-9.537v-.403l1.933-1.87c.19-.19.19-.247.19-.536V8.67l-5.38 13.66h-.726L3.923 8.67v8.016c-.053.385.077.77.348 1.042l2.518 3.053v.403H0v-.403l2.518-3.053c.27-.272.383-.657.328-1.042V6.887z" />
     </svg>
   );
 }
@@ -56,6 +52,17 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
   const isLight = theme === 'light';
   // Use constant image, styling/mono-color is handled seamlessly via CSS filter
   const portraitSrc = '/images/hijaz-portrait.png';
+
+  // Cache previous activeProject so fade-out transition is smooth and doesn't flicker/disappear prematurely
+  const [cachedProject, setCachedProject] = useState(activeProject);
+
+  useEffect(() => {
+    if (activeProject) {
+      setCachedProject(activeProject);
+    }
+  }, [activeProject]);
+
+  const displayProject = activeProject || cachedProject;
 
   // Typewriter effect
   useEffect(() => {
@@ -141,16 +148,6 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
           {/* Vertical Stacked Social Buttons */}
           <div className="sidebar-social-stack">
             <a
-              href="https://twitter.com/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-round-btn"
-              title="X / Twitter"
-              aria-label="X Twitter"
-            >
-              <XIcon size={15} />
-            </a>
-            <a
               href="https://www.linkedin.com/in/hijaaaazz/"
               target="_blank"
               rel="noopener noreferrer"
@@ -165,10 +162,20 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
               target="_blank"
               rel="noopener noreferrer"
               className="social-round-btn"
-              title="GitHub / Portfolio"
+              title="GitHub"
               aria-label="GitHub"
             >
-              <GridIcon size={15} />
+              <GitHubIcon size={15} />
+            </a>
+            <a
+              href="https://medium.com/@hijaz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-round-btn"
+              title="Medium"
+              aria-label="Medium"
+            >
+              <MediumIcon size={15} />
             </a>
           </div>
         </div>
@@ -182,15 +189,19 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
           </div>
 
           {/* Typewriter headline */}
-          <div className="sidebar-intro-headline">
-            <span className="intro-prefix">Hey, I'm </span>
-            <span className="typewriter-active-role">{displayText}</span>
-            <span className="typewriter-bar">|</span>
-          </div>
+<div className="sidebar-intro-headline">
+  <span className="intro-prefix">
+    Hey,<br />
+    <span className="intro-role">
+      I'm&nbsp;
+      <span className="typewriter-active-role">{displayText}</span>
+      <span className="typewriter-bar">|</span>
+    </span>
+  </span>
+</div>
 
           <p className="sidebar-sub-bio">
-            I engineer production Android &amp; iOS applications with Flutter, Clean
-            Architecture, and BLoC, based in Kerala, IN.
+            I build scalable, user-friendly Android &amp; iOS applications with Flutter and Clean Architecture, based in Kerala, IN.
           </p>
 
           <div className="sidebar-card-divider" />
@@ -206,9 +217,11 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
             </a>
 
             <a
-              href={brand.cvUrl || '#contact'}
+              href={brand.cvUrl || '/Resume_Hijaz_C.pdf'}
+              target="_blank"
+              rel="noopener noreferrer"
               className="btn-text-action"
-              title="Resume"
+              title="View Resume (PDF)"
             >
               <FileText size={15} />
               <span>Resume</span>
@@ -218,13 +231,13 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
         {/* Project Details Focused Overlay - Exactly matching reference design */}
         <div className={`sidebar-project-focus-overlay ${activeProject ? 'active' : ''}`}>
-          {activeProject && (
-            <div className="project-focus-inner">
+          {displayProject && (
+            <div className="project-focus-inner" key={displayProject.id}>
               {/* Blurred Project Backdrop Image */}
               <div className="project-focus-bg">
                 <img
-                  src={activeProject.image}
-                  alt={activeProject.title}
+                  src={displayProject.image}
+                  alt={displayProject.title}
                   className="project-focus-bg-img"
                 />
                 <div className="project-focus-backdrop-filter" />
@@ -239,22 +252,22 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
               {/* Main Content Info */}
               <div className="project-focus-body">
-                <h3 className="project-focus-title">{activeProject.title}</h3>
-                <p className="project-focus-desc">{activeProject.subtitle}</p>
+                <h3 className="project-focus-title">{displayProject.title}</h3>
+                <p className="project-focus-desc">{displayProject.subtitle}</p>
 
                 <div className="project-focus-meta-grid">
                   <div className="project-focus-meta-item">
                     <span className="meta-label">Year</span>
-                    <span className="meta-val">{activeProject.date}</span>
+                    <span className="meta-val">{displayProject.date}</span>
                   </div>
                   <div className="project-focus-meta-item">
                     <span className="meta-label">Role</span>
-                    <span className="meta-val">{activeProject.role || 'Lead Mobile & Web Developer'}</span>
+                    <span className="meta-val">{displayProject.role || 'Lead Mobile & Web Developer'}</span>
                   </div>
                 </div>
 
                 <div className="project-focus-tags">
-                  {activeProject.tags.slice(0, 3).map((tag, tIdx) => (
+                  {displayProject.tags.slice(0, 3).map((tag, tIdx) => (
                     <span key={tIdx} className="project-focus-pill">
                       {tag}
                     </span>
@@ -264,27 +277,36 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
                 {/* Footer of the project card inside sidebar */}
                 <div className="project-focus-footer">
                   <div className="project-focus-cta-group">
-                    <a href="#contact" className="project-focus-talk-btn">
-                      <ArrowUpRight size={17} />
-                      <span>Let's talk</span>
-                    </a>
-                    {activeProject.liveUrl && (
+                    {displayProject.liveUrl && (
                       <a
-                        href={activeProject.liveUrl}
+                        href={displayProject.liveUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="project-focus-talk-btn"
+                        title={`View ${displayProject.title}`}
+                      >
+                        <span>View Project</span>
+                        <ArrowUpRight size={15} />
+                      </a>
+                    )}
+                    {displayProject.githubUrl && displayProject.githubUrl.includes('github.com') && (
+                      <a
+                        href={displayProject.githubUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="project-focus-sub-btn"
-                        title="View Live"
+                        title="View Source on GitHub"
+                        aria-label={`View GitHub repository for ${displayProject.title}`}
                       >
-                        <ArrowUpRight size={14} />
+                        <GitHubIcon size={16} />
                       </a>
                     )}
                   </div>
 
                   <div className="project-focus-index-counter">
-                    <span className="curr-num">0{activeProject.currentIndex}</span>
+                    <span className="curr-num">0{displayProject.currentIndex}</span>
                     <span className="sep-slash">/</span>
-                    <span className="total-num">0{activeProject.totalCount}</span>
+                    <span className="total-num">0{displayProject.totalCount}</span>
                   </div>
                 </div>
               </div>

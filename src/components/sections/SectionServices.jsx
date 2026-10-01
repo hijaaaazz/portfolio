@@ -7,29 +7,7 @@ export default function SectionServices() {
   const [openIndex, setOpenIndex] = useState(0);
   const [stackedOpenMap, setStackedOpenMap] = useState({});
 
-  const servicesData = [
-    {
-      id: 'mobile-app',
-      title: 'Mobile App Engineering',
-      tags: ['Flutter Architecture', 'Cross-Platform iOS & Android', 'State Management', 'REST APIs'],
-      desc: 'I build fluid, high-performance mobile applications that balance visual appeal with responsive state architecture, offline persistence, and seamless native integration.',
-      images: ['/images/cover.avif', '/images/BRTOT YPE.avif'],
-    },
-    {
-      id: 'web-dev',
-      title: 'Modern Web Engineering',
-      tags: ['React.js Systems', 'JavaScript (ES6+)', 'SPA Architecture', 'Fast Responsive Layouts'],
-      desc: 'Crafting responsive, performant web applications with clean component trees, fluid interactions, accessible semantics, and modern bundle optimizations.',
-      images: ['/images/netflix.avif', '/images/youtube.avif'],
-    },
-    {
-      id: 'ui-ux',
-      title: 'UI/UX & Interface Design',
-      tags: ['Figma Prototyping', 'Design Systems', 'Dark & Light Modes', 'Micro-interactions'],
-      desc: 'Designing intuitive user interfaces, polished design systems, and thoughtful interaction flows that make digital products memorable and effortless to use.',
-      images: ['/images/cover.avif', '/images/netflix.avif'],
-    },
-  ];
+  const servicesData = portfolioContent.services.items;
 
   const toggleAccordion = (idx) => {
     setOpenIndex(openIndex === idx ? -1 : idx);
@@ -106,7 +84,7 @@ export default function SectionServices() {
                     ))}
                   </div>
 
-                  <p className="service-template-desc">{item.desc}</p>
+                  <p className="service-template-desc">{item.description || item.desc}</p>
                 </div>
               </div>
             </div>

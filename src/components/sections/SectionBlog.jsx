@@ -23,7 +23,7 @@ export default function SectionBlog() {
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <BookOpen size={14} className="tag-icon" />
-        <span>Thoughts &amp; Milestones</span>
+        <span>Thoughts &amp; Moments</span>
       </div>
 
       {/* Responsive Grid Showcase: Desktop 2-column, Mobile stacked with Image in-between & Arrows last */}
@@ -31,13 +31,19 @@ export default function SectionBlog() {
         {/* 1. Heading Header */}
         <div className="blog-grid-header">
           <WordReveal as="h2" className="section-heading-large" stagger={0.04} delay={0.05}>
-            Thoughts &amp;<br />Milestones
+            Thoughts &amp;<br />Moments
           </WordReveal>
         </div>
 
         {/* 2. Featured Visual Image Card (In-between on small screens, right column on desktop) */}
         <div className="blog-grid-visual">
-          <div className="blog-showcase-image-wrapper">
+          <a
+            href={currentPost.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="blog-showcase-image-wrapper"
+            title={`Open on ${currentPost.platform || 'Platform'}`}
+          >
             <img
               src={currentPost.image}
               alt={currentPost.title}
@@ -45,7 +51,11 @@ export default function SectionBlog() {
               key={currentPost.id}
             />
             <div className="blog-showcase-image-glow" aria-hidden="true" />
-          </div>
+            <div className="blog-showcase-link-pill">
+              <span>Read on {currentPost.platform || 'Platform'}</span>
+              <ArrowUpRight size={14} />
+            </div>
+          </a>
         </div>
 
         {/* 3. Quote Area: Green Quote Glyph & Summary Thought */}
@@ -66,21 +76,41 @@ export default function SectionBlog() {
           </div>
         </div>
 
-        {/* 4. Footer Row: Milestone Title, Category, Counter & Navigation Arrows (LAST on small screens!) */}
+        {/* 4. Footer Area: Full-width Text (maxlines 2) + Controls Row Below */}
         <div className="blog-grid-footer">
           <div className="blog-showcase-footer-nav">
             <div className="blog-showcase-author-info">
-              <h4 className="blog-showcase-title">{currentPost.title}</h4>
+              <h4 className="blog-showcase-title">
+                <a
+                  href={currentPost.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="blog-title-link"
+                >
+                  {currentPost.title}
+                </a>
+              </h4>
               <p className="blog-showcase-subtitle">
                 <span>{currentPost.category}</span> • <span>{currentPost.readTime}</span>
               </p>
             </div>
 
             {posts.length > 1 && (
-              <div className="blog-showcase-controls">
-                <span className="blog-showcase-index">
-                  {currentIndex + 1}/{posts.length}
-                </span>
+              <div className="blog-showcase-controls-row">
+                <div className="blog-controls-left">
+                  <span className="blog-showcase-index">
+                    {currentIndex + 1} / {posts.length}
+                  </span>
+                  <a
+                    href={currentPost.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="blog-inline-read-btn"
+                  >
+                    <span>Read on {currentPost.platform || 'Platform'}</span>
+                    <ArrowUpRight size={13} />
+                  </a>
+                </div>
 
                 <div className="blog-nav-buttons-group">
                   <button

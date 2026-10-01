@@ -14,19 +14,20 @@ export default function SectionAbout() {
       title: 'Production Mobile Engineering',
       organization: 'Filumart B2B Platform (Android & iOS)',
       year: '2025',
-      image: '/images/cover.avif',
+      image: 'public/images/playstorefilumart.png',
+    },
+    
+    {
+      title: 'Multi-Platform Learning Ecosystem',
+      organization: 'Skilnk – Student & Tutor Platform',
+      year: '2024',
+      image: '/images/netflix.avif',
     },
     {
       title: 'Offline-First Application Architecture',
       organization: 'Invento – Google Play Store Release',
       year: '2024',
       image: '/images/youtube.avif',
-    },
-    {
-      title: 'Multi-Platform Learning Ecosystem',
-      organization: 'Skilnk – Student & Tutor Platform',
-      year: '2024',
-      image: '/images/netflix.avif',
     },
     {
       title: 'Open Source Package Author',
@@ -115,7 +116,7 @@ export default function SectionAbout() {
       </ul>
 
       {/* Floating cursor-following thumbnail preview mounted directly to document.body via createPortal */}
-      {hoveredIndex !== null && typeof document !== 'undefined' && createPortal(
+      {/* {hoveredIndex !== null && typeof document !== 'undefined' && createPortal(
         <div
           className="award-hover-floating-box"
           style={{
@@ -130,7 +131,7 @@ export default function SectionAbout() {
           />
         </div>,
         document.body
-      )}
+      )} */}
     </section>
   );
 }

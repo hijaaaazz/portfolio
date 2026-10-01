@@ -86,7 +86,7 @@ export default function SectionContact() {
 
       {/* Main Headline matching reference */}
       <WordReveal as="h2" className="contact-exact-heading" stagger={0.03} delay={0.05}>
-        If you have a general or project enquiry, please drop me an email or fill the form – available now
+        If you have a general question, project idea, or just want to get in touch, feel free to drop me an email or fill out the form below.
       </WordReveal>
 
       {status.submitted && (
@@ -170,7 +170,7 @@ export default function SectionContact() {
           </button>
 
           <a
-            href={`mailto:${contact.email}`}
+            href={`mailto:${contact.email}?subject=New%20Project%20Enquiry%20-%20Portfolio&body=Hi%20Hijaz,%0A%0AI%20am%20reaching%20out%20to%20discuss%20a%20potential%20collaboration/project.%0A%0AProject%20Details:%0A-%20Timeline:%0A-%20Budget:%0A-%20Requirements:%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,`}
             className="contact-direct-email-link"
           >
             {contact.email}

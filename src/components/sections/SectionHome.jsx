@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { portfolioContent } from '../../data/portfolioContent';
 import { Globe } from 'lucide-react';
-import DotField from '../DotField';
-import WordReveal from '../WordReveal';
 import InteractiveCarromStriker from '../InteractiveCarromStriker';
 
 function useCounter(target, isVisible, duration = 1400) {
@@ -75,13 +73,18 @@ export default function SectionHome({ theme }) {
     );
 
     if (statsRef.current) {
+      const rect = statsRef.current.getBoundingClientRect();
+      if (rect.top < window.innerHeight + 50 && rect.bottom > 0) {
+        setStatsVisible(true);
+        return;
+      }
       observer.observe(statsRef.current);
     }
 
     return () => observer.disconnect();
   }, []);
 
-  const countProjects = useCounter(20, statsVisible, 1400);
+  const countProjects = useCounter(3, statsVisible, 1400);
   const countDistinction = useCounter(85, statsVisible, 1500);
   const countYears = useCounter(2, statsVisible, 1200);
 
@@ -98,24 +101,6 @@ export default function SectionHome({ theme }) {
 
   return (
     <section id="home" className="section-home">
-      {/* Full Section Background Interactive DotField Canvas */}
-      <div className="section-home-dotfield-bg" aria-hidden="true">
-        <DotField
-          dotRadius={isDark ? 1.75 : 1.4}
-          dotSpacing={14}
-          cursorRadius={450}
-          cursorForce={0.1}
-          bulgeOnly={true}
-          bulgeStrength={65}
-          glowRadius={170}
-          sparkle={false}
-          waveAmplitude={0}
-          gradientFrom={isDark ? "rgba(0, 255, 115, 0.65)" : "rgba(15, 23, 42, 0.38)"}
-          gradientTo={isDark ? "rgba(0, 222, 81, 0.42)" : "rgba(30, 41, 59, 0.18)"}
-          glowColor={isDark ? "rgba(0, 255, 115, 0.45)" : "rgba(15, 23, 42, 0.22)"}
-        />
-      </div>
-
       {/* Top Header Row with Author Mini Badge and Live Clock */}
       <div className="home-top-meta-row">
         <div className="home-author-mini-card">
@@ -140,13 +125,13 @@ export default function SectionHome({ theme }) {
         </div>
       </div>
 
-      {/* Giant Main Headline customized to Flutter & mobile app domain with entrance animation */}
+      {/* Giant Main Headline customized to Flutter & mobile app domain */}
       <div className="home-headline-box">
-        <WordReveal as="h1" className="home-giant-title" stagger={0.06} delay={0.05}>
+        <h1 className="home-giant-title hero-headline-fade">
           I’m building{' '}
           <span className="badge-pill-neon animated-pill">mobile apps</span>{' '}
           <span className="badge-pill-dark animated-pill">&amp; scalable systems</span> that people remember
-        </WordReveal>
+        </h1>
       </div>
 
       {/* Circular Rotating Wireframe Stamp Showcase - Interactive Carrom Striker */}
@@ -154,45 +139,48 @@ export default function SectionHome({ theme }) {
         <InteractiveCarromStriker isDark={isDark} />
       </div>
 
-      {/* Metric Counters Grid with count-up animation */}
-      <div ref={statsRef} className="home-stats-row">
-        <div className="home-stat-box">
-          <p className="stat-large-val">
-            {countProjects}<span className="stat-symbol">+</span>
-          </p>
-          <p className="stat-caption-text">Completed Projects</p>
+      {/* Bottom Group: Metric Counters + Infinite Core Specialties Ticker */}
+      <div className="home-bottom-group">
+        {/* Metric Counters Grid with count-up animation */}
+        <div ref={statsRef} className="home-stats-row">
+          <div className="home-stat-box">
+            <p className="stat-large-val">
+              {countProjects}<span className="stat-symbol">+</span>
+            </p>
+            <p className="stat-caption-text">Completed Projects</p>
+          </div>
+
+          <div className="home-stat-box">
+            <p className="stat-large-val">
+              {countDistinction}<span className="stat-symbol">%</span>
+            </p>
+            <p className="stat-caption-text">Academic Distinction (+2)</p>
+          </div>
+
+          <div className="home-stat-box">
+            <p className="stat-large-val">
+              {countYears}<span className="stat-symbol">+</span>
+            </p>
+            <p className="stat-caption-text">Years Practical Engineering</p>
+          </div>
         </div>
 
-        <div className="home-stat-box">
-          <p className="stat-large-val">
-            {countDistinction}<span className="stat-symbol">%</span>
-          </p>
-          <p className="stat-caption-text">Academic Distinction (+2)</p>
-        </div>
+        {/* Infinite Core Specialties & Skills Ticker matching reference */}
+        <div className="home-client-ticker-bar">
+          <div className="ticker-label-lead">
+            <Globe size={15} className="ticker-globe-icon" />
+            <span>Core Specialties & Skills (2024–26©)</span>
+          </div>
 
-        <div className="home-stat-box">
-          <p className="stat-large-val">
-            {countYears}<span className="stat-symbol">+</span>
-          </p>
-          <p className="stat-caption-text">Years Practical Engineering</p>
-        </div>
-      </div>
-
-      {/* Infinite Clients / Skills Ticker matching screenshot bottom */}
-      <div className="home-client-ticker-bar">
-        <div className="ticker-label-lead">
-          <Globe size={15} className="ticker-globe-icon" />
-          <span>Core Specialties & Skills (2024–26©)</span>
-        </div>
-
-        <div className="ticker-slider-wrapper">
-          <div className="ticker-animated-track">
-            {[...tickerItems, ...tickerItems, ...tickerItems].map((item, idx) => (
-              <div key={idx} className="ticker-chip">
-                <span>{item}</span>
-                <span className="ticker-bullet">✦</span>
-              </div>
-            ))}
+          <div className="ticker-slider-wrapper">
+            <div className="ticker-animated-track">
+              {[...tickerItems, ...tickerItems, ...tickerItems].map((item, idx) => (
+                <div key={idx} className="ticker-chip">
+                  <span>{item}</span>
+                  <span className="ticker-bullet">✦</span>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
