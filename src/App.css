@@ -1875,6 +1875,36 @@ html, body {
   transform: translateY(-2px);
 }
 
+.work-image-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: auto;
+}
+
+.work-image-github-btn {
+  pointer-events: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: rgba(18, 20, 26, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  text-decoration: none;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s ease;
+}
+
+.work-image-github-btn:hover {
+  background: rgba(0, 222, 81, 0.25);
+  border-color: var(--neon-green);
+  color: var(--neon-green);
+  transform: translateY(-2px) scale(1.05);
+}
+
 /* ==========================================================================
    WORK MOBILE & TABLET DETAILS CARD (Reference tfisak)
    Visible only on mobile and tablet (<= 1199px).
