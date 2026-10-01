@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HLogo from './HLogo';
-import { portfolioContent } from '../data/portfolioContent';
+import { portfolioContent } from '../content';
 import { ArrowUpRight, FileText } from 'lucide-react';
 import { 
   GithubIcon, 
@@ -43,15 +43,17 @@ function MediumIcon({ size = 16 }) {
 }
 
 export default function SidebarUser({ theme = 'dark', activeProject = null }) {
-  const { brand, contact } = portfolioContent;
+  const { brand, contact, socialLinks } = portfolioContent;
+  const rolesList = (brand?.roles && brand.roles.length > 0) ? brand.roles : ROLES;
+
   const [roleIndex, setRoleIndex] = useState(0);
   const [displayText, setDisplayText] = useState('');
   const [isDeleting, setIsDeleting] = useState(false);
   const [typingSpeed, setTypingSpeed] = useState(110);
 
   const isLight = theme === 'light';
-  // Use constant image, styling/mono-color is handled seamlessly via CSS filter
-  const portraitSrc = '/images/hijaz-portrait.png';
+  // Use avatar from content.js with fallback
+  const portraitSrc = brand?.avatar || '/images/hijaz-portrait.png';
 
   // Cache previous activeProject so fade-out transition is smooth and doesn't flicker/disappear prematurely
   const [cachedProject, setCachedProject] = useState(activeProject);
@@ -66,14 +68,14 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
   // Typewriter effect
   useEffect(() => {
-    const currentRole = ROLES[roleIndex];
+    const currentRole = rolesList[roleIndex % rolesList.length];
     let timer;
 
     if (!isDeleting && displayText === currentRole) {
       timer = setTimeout(() => setIsDeleting(true), 1600);
     } else if (isDeleting && displayText === '') {
       setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % ROLES.length);
+      setRoleIndex((prev) => (prev + 1) % rolesList.length);
       setTypingSpeed(110);
     } else {
       timer = setTimeout(() => {
@@ -87,7 +89,7 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
     }
 
     return () => clearTimeout(timer);
-  }, [displayText, isDeleting, roleIndex, typingSpeed]);
+  }, [displayText, isDeleting, roleIndex, typingSpeed, rolesList]);
 
   return (
     <aside className="sidebar-user" aria-label="Profile Sidebar">
@@ -125,7 +127,7 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
             />
           </svg>
           <div className="sidebar-avail-tab-content">
-            <span className="avail-vertical-text">Available for Work</span>
+            <span className="avail-vertical-text">{brand?.availability?.status || 'Available for Work'}</span>
             <span className="avail-pulse-dot" />
           </div>
         </div>
@@ -135,7 +137,7 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
           <a
             href="#home"
             className="sidebar-brand-icon"
-            title="Hijaz C"
+            title={brand?.name || 'Home'}
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -147,45 +149,37 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
           {/* Vertical Stacked Social Buttons */}
           <div className="sidebar-social-stack">
-            <a
-              href="https://www.linkedin.com/in/hijaaaazz/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-round-btn"
-              title="LinkedIn"
-              aria-label="LinkedIn"
-            >
-              <LinkedInIcon size={15} />
-            </a>
-            <a
-              href="https://github.com/hijaaaazz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-round-btn"
-              title="GitHub"
-              aria-label="GitHub"
-            >
-              <GitHubIcon size={15} />
-            </a>
-            <a
-              href="https://medium.com/@hijaz"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-round-btn"
-              title="Medium"
-              aria-label="Medium"
-            >
-              <MediumIcon size={15} />
-            </a>
+            {(socialLinks || []).map((s, idx) => {
+              const p = (s.platform || '').toLowerCase();
+              let IconComp = LinkedInIcon;
+              if (p.includes('git')) IconComp = GitHubIcon;
+              else if (p.includes('med')) IconComp = MediumIcon;
+              else if (p.includes('insta')) IconComp = InstagramIcon;
+              else if (p.includes('what') || p.includes('phone')) IconComp = WhatsAppIcon;
+
+              return (
+                <a
+                  key={idx}
+                  href={s.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-round-btn"
+                  title={s.platform}
+                  aria-label={s.platform}
+                >
+                  <IconComp size={15} />
+                </a>
+              );
+            })}
           </div>
         </div>
 
         {/* Bottom Content Area */}
         <div className="sidebar-bottom-content">
           {/* Inline Available for Work indicator matching reference screenshot */}
-          <div className="sidebar-avail-inline-pill" aria-label="Available for Work">
+          <div className="sidebar-avail-inline-pill" aria-label={brand?.availability?.status || 'Available for Work'}>
             <span className="avail-pulse-dot" />
-            <span className="avail-inline-text">Available for Work</span>
+            <span className="avail-inline-text">{brand?.availability?.status || 'Available for Work'}</span>
           </div>
 
           {/* Typewriter headline */}
@@ -201,7 +195,7 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 </div>
 
           <p className="sidebar-sub-bio">
-            I build scalable, user-friendly Android &amp; iOS applications with Flutter and Clean Architecture, based in Kerala, IN.
+            {brand?.shortBio || 'I build scalable, user-friendly applications.'}
           </p>
 
           <div className="sidebar-card-divider" />
@@ -217,7 +211,7 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
             </a>
 
             <a
-              href={brand.cvUrl || '/Resume_Hijaz_C.pdf'}
+              href={brand?.cvUrl || '/Resume_Hijaz_C.pdf'}
               target="_blank"
               rel="noopener noreferrer"
               className="btn-text-action"

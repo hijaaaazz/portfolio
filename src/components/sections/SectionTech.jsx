@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { portfolioContent } from '../../content';
 import { Layers } from 'lucide-react';
 import WordReveal from '../WordReveal';
 
 export default function SectionTech() {
   const [techVisible, setTechVisible] = useState(false);
   const sectionRef = useRef(null);
+
+  const techData = portfolioContent.tech || {};
+  const badge = techData.badge || 'Tech Stack';
+  const heading = techData.heading || 'See how my expertise with these tools drives better results';
+  const techItems = techData.items || [];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -24,44 +30,16 @@ export default function SectionTech() {
     return () => observer.disconnect();
   }, []);
 
-  const techItems = [
-    {
-      name: 'Flutter & Dart',
-      duty: 'Cross-platform mobile apps',
-      percent: 90,
-      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/flutter/flutter-original.svg',
-    },
-    {
-      name: 'Firebase & Cloud',
-      duty: 'Auth, Firestore, Realtime DB, Storage, Hosting & FCM',
-      percent: 90,
-      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/firebase/firebase-plain.svg',
-    },
-    {
-      name: 'Figma',
-      duty: 'Mobile & web UI/UX design',
-      percent: 85,
-      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg',
-    },
-    {
-      name: 'Git & GitHub',
-      duty: 'Version control & collaboration',
-      percent: 88,
-      iconSrc: 'https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg',
-      isGithub: true,
-    },
-  ];
-
   return (
     <section ref={sectionRef} id="tech" className="section-block section-tech">
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Layers size={14} className="tag-icon" />
-        <span>Tech Stack</span>
+        <span>{badge}</span>
       </div>
 
       <WordReveal as="h2" className="section-heading-large" stagger={0.04} delay={0.05}>
-        See how my expertise with these<br className="d-none-mobile" /> tools drives better results
+        {heading}
       </WordReveal>
 
       {/* Tech Stack List matching exact template */}

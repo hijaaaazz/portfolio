@@ -390,7 +390,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
         />
       ))}
 
-      {/* Rotating Outer Text Ring */}
+      {/* Full Rotating Carrom Striker Disc Face (Includes Text, Concentric Rings & Center Design) */}
       <div
         className="stamp-rotating-text-ring"
         style={{
@@ -404,22 +404,56 @@ export default function InteractiveCarromStriker({ isDark = true }) {
               id="stampCirclePath"
               d="M 80, 80 m -62, 0 a 62,62 0 1,1 124,0 a 62,62 0 1,1 -124,0"
             />
+            {/* Gradients for authentic striker concave dimple (finger pit) */}
+            <radialGradient id="strikerDimpleDark" cx="42%" cy="38%" r="62%">
+              <stop offset="0%" stopColor="#252a36" stopOpacity="0.85" />
+              <stop offset="55%" stopColor="#12151c" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#08090d" stopOpacity="0.98" />
+            </radialGradient>
+            <radialGradient id="strikerDimpleLight" cx="42%" cy="38%" r="62%">
+              <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
+              <stop offset="60%" stopColor="#e8ecf2" stopOpacity="0.95" />
+              <stop offset="100%" stopColor="#cfd6e0" stopOpacity="0.98" />
+            </radialGradient>
           </defs>
+
+          {/* 1. Outer Rotating Circular Typography */}
           <text fontSize="10.5" fontWeight="700" letterSpacing="3.5">
             <textPath href="#stampCirclePath">
-            MOBILE APP DEVELOPER • FLUTTER • UI/UX •
+              MOBILE APP DEVELOPER • FLUTTER • UI/UX •
             </textPath>
           </text>
-        </svg>
-      </div>
 
-      {/* Concentric Wireframe Carrom Striker Core */}
-      <div className="stamp-center-wireframe">
-        <div className="ellipse-ring e1" />
-        <div className="ellipse-ring e2" />
-        <div className="ellipse-ring e3" />
-        <div className="ellipse-ring e4" />
-        <div className="striker-core-dot" />
+          {/* 2. Concentric Striker Rings (Inspired by carrom striker reference) */}
+          {/* Outer Border Inset Rim */}
+          <circle cx="80" cy="80" r="52" fill="none" stroke="currentColor" strokeWidth="0.8" opacity="0.25" />
+          
+          {/* Primary Heavy Groove Ring */}
+          <circle cx="80" cy="80" r="48.5" fill="none" stroke="currentColor" strokeWidth="2.4" opacity="0.85" />
+          
+          {/* Neon Green Accent Precision Groove */}
+          <circle cx="80" cy="80" r="44" fill="none" stroke="#00ff73" strokeWidth="1.2" opacity="0.9" />
+          
+          {/* Secondary Concentric Groove */}
+          <circle cx="80" cy="80" r="39.5" fill="none" stroke="currentColor" strokeWidth="2.2" opacity="0.8" />
+          
+          {/* Intermediate Fine Ring with Dash Detail */}
+          <circle cx="80" cy="80" r="34" fill="none" stroke="#00ff73" strokeWidth="0.8" strokeDasharray="3 3" opacity="0.6" />
+
+          {/* 3. Central Concave Finger Dimple Basin */}
+          <circle
+            cx="80"
+            cy="80"
+            r="28"
+            fill={isDark ? "url(#strikerDimpleDark)" : "url(#strikerDimpleLight)"}
+            stroke="#00ff73"
+            strokeWidth="1.6"
+            strokeOpacity="0.75"
+          />
+          <circle cx="80" cy="80" r="25.5" fill="none" stroke="currentColor" strokeWidth="0.7" opacity="0.3" />
+
+          
+        </svg>
       </div>
 
       {/* Flick Me Tooltip when idle */}

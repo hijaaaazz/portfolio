@@ -1,9 +1,13 @@
+import { portfolioContent } from '../content';
+
 /**
- * Handwritten "h" logo — rendered directly from the user's exact handwritten signature image.
+ * Brand logo component — rendered from portfolioContent.brand.logo
  * Adapts blend mode for dark vs light sidebar backgrounds.
  */
 export default function HLogo({ size = 60, className = "", theme = 'dark' }) {
   const isLight = theme === 'light';
+  const logoSrc = portfolioContent?.brand?.logo || '/images/hijaz-h-logo.png';
+  const brandName = portfolioContent?.brand?.name || 'Brand Logo';
 
   return (
     <div
@@ -20,8 +24,8 @@ export default function HLogo({ size = 60, className = "", theme = 'dark' }) {
       }}
     >
       <img
-        src="/images/hijaz-h-logo.png"
-        alt="H Logo"
+        src={logoSrc}
+        alt={brandName}
         style={{
           width: '100%',
           height: '100%',

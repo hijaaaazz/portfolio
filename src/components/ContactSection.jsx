@@ -70,15 +70,7 @@ export default function ContactSection() {
                 </div>
               </a>
 
-              <a href="https://wa.me/918714330170/" target="_blank" rel="noreferrer" className="channel-card whatsapp-highlight">
-                <div className="channel-icon whatsapp-icon">
-                  <MessageCircle size={20} />
-                </div>
-                <div>
-                  <div className="channel-label">WhatsApp & Call</div>
-                  <div className="channel-value">{contact.phone}</div>
-                </div>
-              </a>
+              
 
               <div className="channel-card">
                 <div className="channel-icon">

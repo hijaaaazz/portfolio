@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { portfolioContent } from '../../data/portfolioContent';
+import { portfolioContent } from '../../content';
 import { Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
 import WordReveal from '../WordReveal';
 import emailjs from '@emailjs/browser';
 
 export default function SectionContact() {
-  const { contact } = portfolioContent;
+  const { contact, brand } = portfolioContent;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -81,12 +81,12 @@ export default function SectionContact() {
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Send size={14} className="tag-icon" />
-        <span>CONTACT</span>
+        <span>{contact.badge || 'CONTACT'}</span>
       </div>
 
       {/* Main Headline matching reference */}
       <WordReveal as="h2" className="contact-exact-heading" stagger={0.03} delay={0.05}>
-        If you have a general question, project idea, or just want to get in touch, feel free to drop me an email or fill out the form below.
+        {contact.heading || 'If you have a general question, project idea, or just want to get in touch, feel free to drop me an email or fill out the form below.'}
       </WordReveal>
 
       {status.submitted && (
@@ -170,7 +170,7 @@ export default function SectionContact() {
           </button>
 
           <a
-            href={`mailto:${contact.email}?subject=New%20Project%20Enquiry%20-%20Portfolio&body=Hi%20Hijaz,%0A%0AI%20am%20reaching%20out%20to%20discuss%20a%20potential%20collaboration/project.%0A%0AProject%20Details:%0A-%20Timeline:%0A-%20Budget:%0A-%20Requirements:%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,`}
+            href={`mailto:${contact.email}?subject=New%20Project%20Enquiry%20-%20Portfolio&body=Hi%20${encodeURIComponent(brand?.name || 'there')},%0A%0AI%20am%20reaching%20out%20to%20discuss%20a%20potential%20collaboration/project.%0A%0ALooking%20forward%20to%20hearing%20from%20you.%0A%0ABest%20regards,`}
             className="contact-direct-email-link"
           >
             {contact.email}
@@ -179,12 +179,16 @@ export default function SectionContact() {
       </form>
 
       {/* Philosophy Quote at Bottom matching reference screenshot */}
-      <div className="contact-quote-wrapper">
-        <blockquote className="contact-steve-quote">
-          “First, solve the problem. Then, write the code.“
-        </blockquote>
-        <span className="contact-quote-author">John Johnson</span>
-      </div>
+      {contact.quote?.text && (
+        <div className="contact-quote-wrapper">
+          <blockquote className="contact-steve-quote">
+            “{contact.quote.text}“
+          </blockquote>
+          {contact.quote.author && (
+            <span className="contact-quote-author">{contact.quote.author}</span>
+          )}
+        </div>
+      )}
     </section>
   );
 }

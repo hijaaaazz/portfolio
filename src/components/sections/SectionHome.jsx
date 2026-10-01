@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { portfolioContent } from '../../data/portfolioContent';
+import { portfolioContent } from '../../content';
 import { Globe } from 'lucide-react';
 import InteractiveCarromStriker from '../InteractiveCarromStriker';
 
@@ -32,34 +32,58 @@ function useCounter(target, isVisible, duration = 1400) {
   return count;
 }
 
+function StatCounterItem({ target, symbol = '+', label, isVisible }) {
+  const count = useCounter(target, isVisible);
+  return (
+    <div className="home-stat-box">
+      <p className="stat-large-val">
+        {count}
+        <span className="stat-symbol">{symbol}</span>
+      </p>
+      <p className="stat-caption-text">{label}</p>
+    </div>
+  );
+}
+
 export default function SectionHome({ theme }) {
   const isDark = theme !== 'light';
-  const [currentDateTime, setCurrentDateTime] = useState({ date: 'Mon, Sep 28', time: '12:00' });
+  const { brand, home } = portfolioContent;
+  const timeZone = brand?.timezone || 'Asia/Kolkata';
+
+  const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
   const [statsVisible, setStatsVisible] = useState(false);
   const statsRef = useRef(null);
 
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const dateStr = now.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        timeZone: 'Asia/Kolkata',
-      });
-      const timeStr = now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-        timeZone: 'Asia/Kolkata',
-      });
-      setCurrentDateTime({ date: dateStr, time: timeStr });
+      try {
+        const dateStr = now.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          timeZone,
+        });
+        const timeStr = now.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone,
+        });
+        setCurrentDateTime({ date: dateStr, time: timeStr });
+      } catch {
+        // Fallback if invalid timezone string
+        setCurrentDateTime({
+          date: now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+          time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+        });
+      }
     };
 
     updateTime();
     const timer = setInterval(updateTime, 1000);
     return () => clearInterval(timer);
-  }, []);
+  }, [timeZone]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -84,11 +108,20 @@ export default function SectionHome({ theme }) {
     return () => observer.disconnect();
   }, []);
 
-  const countProjects = useCounter(3, statsVisible, 1400);
-  const countDistinction = useCounter(85, statsVisible, 1500);
-  const countYears = useCounter(2, statsVisible, 1200);
+  const headline = home?.headline || {
+    prefix: "I’m building",
+    pill1: "mobile apps",
+    pill2: "& scalable systems",
+    suffix: "that people remember",
+  };
 
-  const tickerItems = [
+  const stats = home?.stats || [
+    { value: 3, symbol: '+', label: 'Completed Projects' },
+    { value: 85, symbol: '%', label: 'Academic Distinction (+2)' },
+    { value: 2, symbol: '+', label: 'Years Practical Engineering' },
+  ];
+
+  const tickerItems = home?.ticker?.items || [
     'Flutter Apps',
     'Clean Architecture',
     'BLoC State Management',
@@ -99,6 +132,8 @@ export default function SectionHome({ theme }) {
     'App Store & Play Store',
   ];
 
+  const tickerTitle = home?.ticker?.title || 'Core Specialties & Skills (2024–26©)';
+
   return (
     <section id="home" className="section-home">
       {/* Top Header Row with Author Mini Badge and Live Clock */}
@@ -106,14 +141,14 @@ export default function SectionHome({ theme }) {
         <div className="home-author-mini-card">
           <div className="mini-avatar-wrapper">
             <img
-              src="/images/hijaz-portrait.png"
-              alt="Hijaz C"
+              src={brand?.avatar || '/images/hijaz-portrait.png'}
+              alt={brand?.name || 'Author portrait'}
               className="mini-avatar-img"
             />
           </div>
           <div className="mini-avatar-info">
-            <p className="mini-author-name">Hijaz C</p>
-            <p className="mini-author-title">Flutter Developer</p>
+            <p className="mini-author-name">{brand?.name || 'Author Name'}</p>
+            <p className="mini-author-title">{brand?.tagline || 'Developer'}</p>
           </div>
         </div>
 
@@ -125,12 +160,13 @@ export default function SectionHome({ theme }) {
         </div>
       </div>
 
-      {/* Giant Main Headline customized to Flutter & mobile app domain */}
+      {/* Giant Main Headline */}
       <div className="home-headline-box">
         <h1 className="home-giant-title hero-headline-fade">
-          I’m building{' '}
-          <span className="badge-pill-neon animated-pill">mobile apps</span>{' '}
-          <span className="badge-pill-dark animated-pill">&amp; scalable systems</span> that people remember
+          {headline.prefix}{' '}
+          <span className="badge-pill-neon animated-pill">{headline.pill1}</span>{' '}
+          <span className="badge-pill-dark animated-pill">{headline.pill2}</span>{' '}
+          {headline.suffix}
         </h1>
       </div>
 
@@ -143,33 +179,22 @@ export default function SectionHome({ theme }) {
       <div className="home-bottom-group">
         {/* Metric Counters Grid with count-up animation */}
         <div ref={statsRef} className="home-stats-row">
-          <div className="home-stat-box">
-            <p className="stat-large-val">
-              {countProjects}<span className="stat-symbol">+</span>
-            </p>
-            <p className="stat-caption-text">Completed Projects</p>
-          </div>
-
-          <div className="home-stat-box">
-            <p className="stat-large-val">
-              {countDistinction}<span className="stat-symbol">%</span>
-            </p>
-            <p className="stat-caption-text">Academic Distinction (+2)</p>
-          </div>
-
-          <div className="home-stat-box">
-            <p className="stat-large-val">
-              {countYears}<span className="stat-symbol">+</span>
-            </p>
-            <p className="stat-caption-text">Years Practical Engineering</p>
-          </div>
+          {stats.map((stat, idx) => (
+            <StatCounterItem
+              key={idx}
+              target={stat.value}
+              symbol={stat.symbol}
+              label={stat.label}
+              isVisible={statsVisible}
+            />
+          ))}
         </div>
 
-        {/* Infinite Core Specialties & Skills Ticker matching reference */}
+        {/* Infinite Core Specialties & Skills Ticker */}
         <div className="home-client-ticker-bar">
           <div className="ticker-label-lead">
             <Globe size={15} className="ticker-globe-icon" />
-            <span>Core Specialties & Skills (2024–26©)</span>
+            <span>{tickerTitle}</span>
           </div>
 
           <div className="ticker-slider-wrapper">

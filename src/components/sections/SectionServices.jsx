@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { portfolioContent } from '../../data/portfolioContent';
+import { portfolioContent } from '../../content';
 import { Sparkles, Plus, Minus } from 'lucide-react';
 import WordReveal from '../WordReveal';
 
@@ -7,7 +7,8 @@ export default function SectionServices() {
   const [openIndex, setOpenIndex] = useState(0);
   const [stackedOpenMap, setStackedOpenMap] = useState({});
 
-  const servicesData = portfolioContent.services.items;
+  const servicesData = portfolioContent.services?.items || [];
+  const badge = portfolioContent.services?.badge || 'Services';
 
   const toggleAccordion = (idx) => {
     setOpenIndex(openIndex === idx ? -1 : idx);
@@ -25,7 +26,7 @@ export default function SectionServices() {
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Sparkles size={14} className="tag-icon" />
-        <span>Services</span>
+        <span>{badge}</span>
       </div>
 
       {/* Accordion List matching exact template */}

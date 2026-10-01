@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
-import { portfolioContent } from '../../data/portfolioContent';
+import { portfolioContent } from '../../content';
 import { BookOpen, ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import WordReveal from '../WordReveal';
 
 export default function SectionBlog() {
   const { blog } = portfolioContent;
-  const posts = blog.posts || [];
+  const posts = blog?.posts || [];
+  const badge = blog?.badge || 'Thoughts & Moments';
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const currentPost = posts[currentIndex] || posts[0];
+  const currentPost = posts[currentIndex] || posts[0] || {};
 
   const handlePrev = () => {
     setCurrentIndex((prev) => (prev === 0 ? posts.length - 1 : prev - 1));
@@ -23,7 +24,7 @@ export default function SectionBlog() {
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <BookOpen size={14} className="tag-icon" />
-        <span>Thoughts &amp; Moments</span>
+        <span>{badge}</span>
       </div>
 
       {/* Responsive Grid Showcase: Desktop 2-column, Mobile stacked with Image in-between & Arrows last */}

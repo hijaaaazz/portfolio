@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import HLogo from './HLogo';
+import { portfolioContent } from '../content';
 import { Menu, X, Clock, MapPin, ArrowUpRight, Sun, Moon } from 'lucide-react';
 
-const NAV_ITEMS = [
+const DEFAULT_NAV_ITEMS = [
   { id: 'home', label: 'Home' },
   { id: 'about', label: 'About' },
   { id: 'education', label: 'Education' },
@@ -14,25 +15,36 @@ const NAV_ITEMS = [
 ];
 
 export default function HeaderMobile({ theme = 'light', toggleTheme }) {
-  const [currentDateTime, setCurrentDateTime] = useState({ date: 'Tue, Sep 29', time: '20:32' });
+  const { brand, navigation } = portfolioContent;
+  const navItems = navigation || DEFAULT_NAV_ITEMS;
+  const timeZone = brand?.timezone || 'Asia/Kolkata';
+
+  const [currentDateTime, setCurrentDateTime] = useState({ date: '', time: '' });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateClock = () => {
       const now = new Date();
-      const dateStr = now.toLocaleDateString('en-US', {
-        weekday: 'short',
-        month: 'short',
-        day: 'numeric',
-        timeZone: 'Asia/Kolkata',
-      });
-      const timeStr = now.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false,
-        timeZone: 'Asia/Kolkata',
-      });
-      setCurrentDateTime({ date: dateStr, time: timeStr });
+      try {
+        const dateStr = now.toLocaleDateString('en-US', {
+          weekday: 'short',
+          month: 'short',
+          day: 'numeric',
+          timeZone,
+        });
+        const timeStr = now.toLocaleTimeString('en-US', {
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false,
+          timeZone,
+        });
+        setCurrentDateTime({ date: dateStr, time: timeStr });
+      } catch {
+        setCurrentDateTime({
+          date: now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+          time: now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false }),
+        });
+      }
     };
 
     updateClock();
@@ -51,7 +63,7 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
           window.scrollTo({ top: 0, behavior: 'smooth' });
           history.pushState(null, '', '#home');
         }}
-        aria-label="Hijaz C Home"
+        aria-label={`${brand?.name || 'Home'} Home`}
       >
         <HLogo size={36} theme={theme} />
       </a>
@@ -80,7 +92,7 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
             onClick={(e) => e.stopPropagation()}
           >
             <nav className="mobile-dropdown-nav">
-              {NAV_ITEMS.map((item) => (
+              {navItems.map((item) => (
                 <a
                   key={item.id}
                   href={`#${item.id}`}

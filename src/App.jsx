@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { portfolioContent } from './content';
 import SidebarUser from './components/SidebarUser';
 import SidebarTools from './components/SidebarTools';
 import HeaderMobile from './components/HeaderMobile';
@@ -25,6 +26,21 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('isak_theme', theme);
   }, [theme]);
+
+  // Set document title and meta description from content.js
+  useEffect(() => {
+    if (portfolioContent.brand?.metaTitle) {
+      document.title = portfolioContent.brand.metaTitle;
+    } else if (portfolioContent.brand?.name) {
+      document.title = `${portfolioContent.brand.name} — ${portfolioContent.brand.tagline || 'Portfolio'}`;
+    }
+    if (portfolioContent.brand?.metaDescription) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute('content', portfolioContent.brand.metaDescription);
+      }
+    }
+  }, []);
 
   // Handle scrollRestoration cleanly
   useEffect(() => {
@@ -121,22 +137,34 @@ export default function App() {
       </div>
 
       {/* Full-width interactive DotField canvas spanning across entire Home section, sidebars, user & nav */}
-      <div className="home-viewport-dotfield-bg" aria-hidden="true">
-        <DotField
-          dotRadius={isDark ? 1.75 : 1.4}
-          dotSpacing={14}
-          cursorRadius={450}
-          cursorForce={0.1}
-          bulgeOnly={true}
-          bulgeStrength={65}
-          glowRadius={170}
-          sparkle={false}
-          waveAmplitude={0}
-          gradientFrom={isDark ? "rgba(0, 255, 115, 0.65)" : "rgba(15, 23, 42, 0.38)"}
-          gradientTo={isDark ? "rgba(0, 222, 81, 0.42)" : "rgba(30, 41, 59, 0.18)"}
-          glowColor={isDark ? "rgba(0, 255, 115, 0.45)" : "rgba(15, 23, 42, 0.22)"}
-        />
-      </div>
+     <div className="home-viewport-dotfield-bg" aria-hidden="true">
+  <DotField
+    dotRadius={isDark ? 1.75 : 1.8}
+    dotSpacing={isDark ? 14 : 13}
+    cursorRadius={450}
+    cursorForce={0.1}
+    bulgeOnly={true}
+    bulgeStrength={65}
+    glowRadius={isDark ? 170 : 190}
+    sparkle={false}
+    waveAmplitude={0}
+    gradientFrom={
+      isDark
+        ? "rgba(0, 255, 115, 0.65)"
+        : "rgba(0, 0, 0, 0.58)"
+    }
+    gradientTo={
+      isDark
+        ? "rgba(0, 222, 81, 0.42)"
+        : "rgba(0, 0, 0, 0.32)"
+    }
+    glowColor={
+      isDark
+        ? "rgba(0, 255, 115, 0.45)"
+        : "rgba(0, 0, 0, 0.35)"
+    }
+  />
+</div>
 
       {/* Mobile / Tablet Header Bar */}
       <HeaderMobile theme={theme} toggleTheme={toggleTheme} />

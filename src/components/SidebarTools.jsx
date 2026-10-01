@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { portfolioContent } from '../content';
 import { 
   Settings, 
   Sun, 
@@ -14,30 +15,46 @@ import {
   ArrowUp 
 } from 'lucide-react';
 
-const NAV_ITEMS = [
-  { id: 'home', label: 'Home', icon: Home },
-  { id: 'about', label: 'About', icon: User },
-  { id: 'education', label: 'Education', icon: GraduationCap },
-  { id: 'work', label: 'Work', icon: Briefcase },
-  { id: 'services', label: 'Services', icon: Sparkles },
-  { id: 'tech', label: 'Tech Stack', icon: Layers },
-  { id: 'blog', label: 'Milestones', icon: BookOpen },
-  { id: 'contact', label: 'Contact', icon: Send },
+const ICON_MAP = {
+  home: Home,
+  about: User,
+  education: GraduationCap,
+  work: Briefcase,
+  services: Sparkles,
+  tech: Layers,
+  blog: BookOpen,
+  contact: Send,
+};
+
+const DEFAULT_NAV = [
+  { id: 'home', label: 'Home' },
+  { id: 'about', label: 'About' },
+  { id: 'education', label: 'Education' },
+  { id: 'work', label: 'Work' },
+  { id: 'services', label: 'Services' },
+  { id: 'tech', label: 'Tech Stack' },
+  { id: 'blog', label: 'Milestones' },
+  { id: 'contact', label: 'Contact' },
 ];
 
 export default function SidebarTools({ theme = 'light', toggleTheme }) {
   const [activeSection, setActiveSection] = useState('home');
   const [showTopBtn, setShowTopBtn] = useState(false);
 
+  const navItems = (portfolioContent.navigation || DEFAULT_NAV).map((item) => ({
+    ...item,
+    icon: ICON_MAP[item.id] || Home,
+  }));
+
   useEffect(() => {
     const handleScroll = () => {
       setShowTopBtn(window.scrollY > 300);
 
       const scrollPosition = window.scrollY + 280;
-      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
-        const section = document.getElementById(NAV_ITEMS[i].id);
+      for (let i = navItems.length - 1; i >= 0; i--) {
+        const section = document.getElementById(navItems[i].id);
         if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(NAV_ITEMS[i].id);
+          setActiveSection(navItems[i].id);
           break;
         }
       }
@@ -69,7 +86,7 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
       <div className="tools-floating-dock">
         {/* Navigation List */}
         <nav className="dock-nav-items">
-          {NAV_ITEMS.map((item) => {
+          {navItems.map((item) => {
             const IconComp = item.icon;
             const isActive = activeSection === item.id;
 

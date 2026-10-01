@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { portfolioContent } from '../../data/portfolioContent';
+import { portfolioContent } from '../../content';
 import { Briefcase, ArrowUpRight } from 'lucide-react';
 import HLogo from '../HLogo';
 import { GithubIcon } from '../SocialIcons';
 
 export default function SectionWork({ setActiveProject }) {
-  const { projects } = portfolioContent;
+  const { projects, brand } = portfolioContent;
   const cardRefs = useRef([]);
   const activeIndexRef = useRef(null);
 
@@ -132,7 +132,7 @@ export default function SectionWork({ setActiveProject }) {
       {/* Section Tag Badge */}
       <div className="section-tag-pill">
         <Briefcase size={14} className="tag-icon" />
-        <span>Work Highlights</span>
+        <span>{projects.badge || 'Work Highlights'}</span>
       </div>
 
       {/* Sticky Project Cards matching reference template */}
