@@ -5,7 +5,7 @@ import HLogo from '../HLogo';
 import { GithubIcon } from '../SocialIcons';
 
 export default function SectionWork({ setActiveProject }) {
-  const { projects, brand } = portfolioContent;
+  const { projects } = portfolioContent;
   const cardRefs = useRef([]);
   const activeIndexRef = useRef(null);
 

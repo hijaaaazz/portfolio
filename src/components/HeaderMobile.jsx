@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import HLogo from './HLogo';
 import { portfolioContent } from '../content';
-import { Menu, X, Clock, MapPin, ArrowUpRight, Sun, Moon } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 const DEFAULT_NAV_ITEMS = [
   { id: 'home', label: 'Home' },
@@ -14,7 +14,7 @@ const DEFAULT_NAV_ITEMS = [
   { id: 'contact', label: 'Contact' },
 ];
 
-export default function HeaderMobile({ theme = 'light', toggleTheme }) {
+export default function HeaderMobile({ theme = 'light' }) {
   const { brand, navigation } = portfolioContent;
   const navItems = navigation || DEFAULT_NAV_ITEMS;
   const timeZone = brand?.timezone || 'Asia/Kolkata';
@@ -50,7 +50,7 @@ export default function HeaderMobile({ theme = 'light', toggleTheme }) {
     updateClock();
     const interval = setInterval(updateClock, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [timeZone]);
 
   return (
     <header className="mobile-floating-header">

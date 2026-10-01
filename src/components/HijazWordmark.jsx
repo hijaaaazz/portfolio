@@ -40,7 +40,7 @@ export default function HijazWordmark({
     <div
       ref={ref}
       className={`hijaz-vector-wordmark ${isVisible ? 'is-revealed' : ''} ${className}`}
-      style={style}
+      style={{ width, ...style }}
     >
       <svg
         viewBox="380 160 1420 920"

@@ -2,12 +2,6 @@ import React, { useState, useEffect } from 'react';
 import HLogo from './HLogo';
 import { portfolioContent } from '../content';
 import { ArrowUpRight, FileText } from 'lucide-react';
-import { 
-  GithubIcon, 
-  LinkedinIcon, 
-  InstagramIcon, 
-  WhatsAppIcon 
-} from './SocialIcons';
 
 const ROLES = [
   'Mobile App Developer',
@@ -43,7 +37,7 @@ function MediumIcon({ size = 16 }) {
 }
 
 export default function SidebarUser({ theme = 'dark', activeProject = null }) {
-  const { brand, contact, socialLinks } = portfolioContent;
+  const { brand, socialLinks } = portfolioContent;
   const rolesList = (brand?.roles && brand.roles.length > 0) ? brand.roles : ROLES;
 
   const [roleIndex, setRoleIndex] = useState(0);
@@ -57,12 +51,14 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
 
   // Cache previous activeProject so fade-out transition is smooth and doesn't flicker/disappear prematurely
   const [cachedProject, setCachedProject] = useState(activeProject);
+  const [prevActive, setPrevActive] = useState(activeProject);
 
-  useEffect(() => {
+  if (activeProject !== prevActive) {
+    setPrevActive(activeProject);
     if (activeProject) {
       setCachedProject(activeProject);
     }
-  }, [activeProject]);
+  }
 
   const displayProject = activeProject || cachedProject;
 
@@ -74,9 +70,11 @@ export default function SidebarUser({ theme = 'dark', activeProject = null }) {
     if (!isDeleting && displayText === currentRole) {
       timer = setTimeout(() => setIsDeleting(true), 1600);
     } else if (isDeleting && displayText === '') {
-      setIsDeleting(false);
-      setRoleIndex((prev) => (prev + 1) % rolesList.length);
-      setTypingSpeed(110);
+      timer = setTimeout(() => {
+        setIsDeleting(false);
+        setRoleIndex((prev) => (prev + 1) % rolesList.length);
+        setTypingSpeed(110);
+      }, 250);
     } else {
       timer = setTimeout(() => {
         setDisplayText((prev) =>

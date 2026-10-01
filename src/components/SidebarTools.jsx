@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { portfolioContent } from '../content';
 import { 
-  Settings, 
   Sun, 
   Moon, 
   Home, 
@@ -37,24 +36,24 @@ const DEFAULT_NAV = [
   { id: 'contact', label: 'Contact' },
 ];
 
+const NAV_ITEMS = (portfolioContent.navigation || DEFAULT_NAV).map((item) => ({
+  ...item,
+  icon: ICON_MAP[item.id] || Home,
+}));
+
 export default function SidebarTools({ theme = 'light', toggleTheme }) {
   const [activeSection, setActiveSection] = useState('home');
   const [showTopBtn, setShowTopBtn] = useState(false);
-
-  const navItems = (portfolioContent.navigation || DEFAULT_NAV).map((item) => ({
-    ...item,
-    icon: ICON_MAP[item.id] || Home,
-  }));
 
   useEffect(() => {
     const handleScroll = () => {
       setShowTopBtn(window.scrollY > 300);
 
       const scrollPosition = window.scrollY + 280;
-      for (let i = navItems.length - 1; i >= 0; i--) {
-        const section = document.getElementById(navItems[i].id);
+      for (let i = NAV_ITEMS.length - 1; i >= 0; i--) {
+        const section = document.getElementById(NAV_ITEMS[i].id);
         if (section && section.offsetTop <= scrollPosition) {
-          setActiveSection(navItems[i].id);
+          setActiveSection(NAV_ITEMS[i].id);
           break;
         }
       }
@@ -86,7 +85,7 @@ export default function SidebarTools({ theme = 'light', toggleTheme }) {
       <div className="tools-floating-dock">
         {/* Navigation List */}
         <nav className="dock-nav-items">
-          {navItems.map((item) => {
+          {NAV_ITEMS.map((item) => {
             const IconComp = item.icon;
             const isActive = activeSection === item.id;
 

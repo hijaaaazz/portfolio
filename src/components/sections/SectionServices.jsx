@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { portfolioContent } from '../../content';
-import { Sparkles, Plus, Minus } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 import WordReveal from '../WordReveal';
 
 export default function SectionServices() {

@@ -53,7 +53,7 @@ function playCarromClack(intensity = 1) {
     oscSnap.start(t);
     oscBody.stop(t + 0.09);
     oscSnap.stop(t + 0.09);
-  } catch (err) {
+  } catch {
     // Audio context fallback
   }
 }
@@ -226,7 +226,7 @@ export default function InteractiveCarromStriker({ isDark = true }) {
 
     animId = requestAnimationFrame(physicsLoop);
     return () => cancelAnimationFrame(animId);
-  }, []);
+  }, [getBounds]);
 
   // Pointer Aim & Flick Handlers
   const handlePointerDown = (e) => {

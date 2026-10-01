@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { portfolioContent } from '../../content';
-import { Briefcase, GraduationCap, School } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 
 function getTimelineIcon(type) {
   if (type === 'work') {

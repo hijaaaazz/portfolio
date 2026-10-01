@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { portfolioContent } from '../../content';
 import { User } from 'lucide-react';
 import WordReveal from '../WordReveal';
 
 export default function SectionAbout() {
-  const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [mousePos, setMousePos] = useState({ clientX: 0, clientY: 0 });
-
   const aboutData = portfolioContent.about || {};
   const badge = aboutData.badge || 'About';
   const heading = aboutData.heading || 'Engineering scalable mobile apps with Flutter, clean architecture, and robust code';
@@ -14,29 +11,6 @@ export default function SectionAbout() {
     'I am a Flutter Developer with 2+ years of application engineering experience, including 8+ months in professional industry production.',
   ];
   const competencies = aboutData.competencies || [];
-
-  useEffect(() => {
-    if (hoveredIndex === null) return;
-
-    const handlePointerMove = (e) => {
-      setMousePos({
-        clientX: e.clientX,
-        clientY: e.clientY,
-      });
-    };
-
-    const handleScroll = () => {
-      setHoveredIndex(null);
-    };
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('pointermove', handlePointerMove);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [hoveredIndex]);
 
   return (
     <section id="about" className="section-block section-about flat-spacing">
@@ -62,19 +36,9 @@ export default function SectionAbout() {
 
       {/* Key Milestones & Capabilities List */}
       {competencies.length > 0 && (
-        <ul 
-          className="award-list-clean"
-          onMouseLeave={() => setHoveredIndex(null)}
-        >
+        <ul className="award-list-clean">
           {competencies.map((item, idx) => (
-            <li
-              key={idx}
-              className="award-item-clean"
-              onMouseEnter={(e) => {
-                setHoveredIndex(idx);
-                setMousePos({ clientX: e.clientX, clientY: e.clientY });
-              }}
-            >
+            <li key={idx} className="award-item-clean">
               <div className="award-left">
                 <h3 className="award-name">{item.title}</h3>
                 <p className="award-desc">{item.organization}</p>
