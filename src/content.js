@@ -20,8 +20,8 @@ export const portfolioContent = {
   brand: {
     name: "Hijaz C",
     tagline: "Flutter Developer",
-    metaTitle: "Hijaz C — Mobile & Web Developer",
-    metaDescription: "Flutter Developer with 2+ years of application engineering experience. Building scalable, production-grade Android & iOS applications.",
+    metaTitle: "Hijaz C — Flutter Developer & Mobile App Engineer",
+    metaDescription: "Hijaz C is a Flutter Developer & Mobile App Engineer specializing in high-performance Android & iOS applications, Clean Architecture, BLoC, and store deployments.",
     displayWordmark: "hijaz", // Displayed in the signature area in the footer
     avatar: "/images/hijaz-portrait.png", // Main portrait on the sticky sidebar
     logo: "/images/hijaz-h-logo.png", // Header & sidebar brand logo

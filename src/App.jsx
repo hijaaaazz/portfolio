@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { portfolioContent } from './content';
 import SidebarUser from './components/SidebarUser';
@@ -16,15 +18,30 @@ import DotField from './components/DotField';
 import './App.css';
 
 export default function App() {
-  const [theme, setTheme] = useState(() => {
-    const saved = localStorage.getItem('isak_theme');
-    // Default to dark mode (matches reference design)
-    return saved || 'dark';
-  });
+  const [theme, setTheme] = useState('dark');
+
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem('isak_theme');
+        if (saved) {
+          setTheme(saved);
+        }
+      }
+    } catch {
+      // Ignore if localStorage unavailable
+    }
+  }, []);
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('isak_theme', theme);
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem('isak_theme', theme);
+      }
+    } catch {
+      // Ignore if localStorage unavailable
+    }
   }, [theme]);
 
   // Set document title and meta description from content.js

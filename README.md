@@ -1,6 +1,16 @@
-# ⚡ Developer Portfolio Template
+# ⚡ Hijaz C — Flutter Developer & Mobile App Engineer Portfolio
 
-A high-performance, dynamic developer portfolio built with React, Vite, and modern CSS. Features interactive canvas effects (DotField), an interactive physical carrom striker, smooth view-transition theme switching (dark/light), sticky project showcases, and a responsive mobile experience.
+A high-performance, dynamic developer portfolio built with **Next.js 15+ App Router**, **React 19**, and modern CSS. Features interactive canvas effects (DotField), an interactive physical carrom striker, smooth view-transition theme switching (dark/light), sticky project showcases, and a responsive mobile experience. Fully optimized for search engines with server-rendered metadata, Schema.org JSON-LD, sitemap, and robots configuration.
+
+---
+
+## 🔍 SEO & Developer Search Ranking
+
+This portfolio is tailored specifically for discovery as a **Flutter Developer & Mobile App Engineer**:
+- **Server-Rendered Metadata**: Dynamic OpenGraph and Twitter cards for instant link previews.
+- **Schema.org Structured Data**: Integrated `Person` and `ProfilePage` JSON-LD graph matching Google search guidelines.
+- **Search Engine Discovery**: Automatic `/sitemap.xml` and `/robots.txt` generation.
+- **Fast Core Web Vitals**: Zero layout shift font loading and Turbopack static compilation.
 
 ---
 
@@ -35,31 +45,27 @@ To keep your EmailJS credentials private and hidden from GitHub:
    ```bash
    cp .env.example .env
    ```
-2. Open `.env` and fill in your keys:
+2. Open `.env` and fill in your keys (both `NEXT_PUBLIC_*` and `VITE_*` variable names are supported):
    ```env
-   VITE_EMAILJS_SERVICE_ID=your_service_id_here
-   VITE_EMAILJS_TEMPLATE_ID=your_template_id_here
-   VITE_EMAILJS_PUBLIC_KEY=your_public_key_here
+   NEXT_PUBLIC_EMAILJS_SERVICE_ID=your_service_id_here
+   NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=your_template_id_here
+   NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=your_public_key_here
    ```
-3. `.gitignore` is already configured to ignore `.env`, ensuring your credentials will **never** be pushed to your public repository!
+3. `.gitignore` is configured to ignore `.env`, ensuring your credentials will **never** be pushed to your public repository!
 
 ---
 
 ## 🌐 Deploying to Vercel (Auto-Deployment)
 
-### **Does using `.env` break Vercel auto-deployment?**
-**No, absolutely not!** Vercel is specifically built for this workflow.
-
-When you push code to GitHub:
-1. GitHub contains the code **without** your `.env` file.
-2. In your **Vercel Dashboard**:
-   - Go to your Project &rarr; **Settings** &rarr; **Environment Variables**.
-   - Add the 3 variables:
-     - `VITE_EMAILJS_SERVICE_ID`
-     - `VITE_EMAILJS_TEMPLATE_ID`
-     - `VITE_EMAILJS_PUBLIC_KEY`
-   - Select **Production**, **Preview**, and **Development**, then click **Save**.
-3. Every time you push a commit or merge a pull request to GitHub, Vercel automatically deploys your project and injects these variables during build time.
+### **Zero Configuration Needed!**
+When you push this repository to GitHub:
+1. Connect your repository on [Vercel](https://vercel.com).
+2. Vercel automatically detects **Next.js** and configures the build settings (`next build`).
+3. Under **Settings &rarr; Environment Variables**, add your EmailJS keys:
+   - `NEXT_PUBLIC_EMAILJS_SERVICE_ID` (or `VITE_EMAILJS_SERVICE_ID`)
+   - `NEXT_PUBLIC_EMAILJS_TEMPLATE_ID` (or `VITE_EMAILJS_TEMPLATE_ID`)
+   - `NEXT_PUBLIC_EMAILJS_PUBLIC_KEY` (or `VITE_EMAILJS_PUBLIC_KEY`)
+4. Every commit pushed to `main` will automatically build and deploy at edge speed!
 
 > **Graceful Fallback:** If you don't configure EmailJS, the contact form will automatically guide visitors to email you directly via a single-click `mailto:` button with pre-filled details. Nothing ever breaks.
 
@@ -68,15 +74,14 @@ When you push code to GitHub:
 ## 💻 Local Development
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/hijaaaazz/portfolio.git
-cd portfolio
-
-# 2. Install dependencies
+# 1. Install dependencies
 npm install
 
-# 3. Start local development server
+# 2. Start local Next.js development server
 npm run dev
+
+# 3. Build for production (validates build)
+npm run build
 ```
 
-Visit `http://localhost:5173` to see your changes live.
+Visit `http://localhost:3000` to see your changes live.

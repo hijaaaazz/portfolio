@@ -1,14 +1,18 @@
-import React, { useEffect, useRef, useState } from 'react';
+'use client';
+
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
 /**
  * HijazWordmark - Ultra-sharp theme-adaptive vector SVG traced directly from
- * the original brush calligraphy signature.
+ * the original brush calligraphy signature, featuring realistic handwriting-in animation.
  * 
  * Features:
  * - Pure vector SVG (infinite sharpness, zero pixelation on retina/4K displays)
- * - Adapts to theme colors via fill="currentColor"
- * - Scroll-reveal blur-fade entrance animation
- * - Interactive hover micro-tilt and specular glow
+ * - Cinematic ink handwriting sweep on scroll reveal
+ * - Glowing stylus pen spark traveling along the stroke
+ * - Interactive hover zoom, micro-tilt, and specular neon glow
+ * - Click-to-replay handwriting animation
+ * - Adapts dynamically to light/dark themes
  */
 export default function HijazWordmark({
   className = '',
@@ -17,10 +21,17 @@ export default function HijazWordmark({
 }) {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // Check if wordmark is already in view on initial render or page load
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      setIsVisible(true);
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -29,31 +40,40 @@ export default function HijazWordmark({
           observer.disconnect();
         }
       },
-      { threshold: 0.15 }
+      { threshold: 0.1 }
     );
 
     observer.observe(el);
     return () => observer.disconnect();
   }, []);
 
+  const replayAnimation = useCallback(() => {
+    setAnimationKey((prev) => prev + 1);
+  }, []);
+
   return (
     <div
       ref={ref}
-      className={`hijaz-vector-wordmark ${isVisible ? 'is-revealed' : ''} ${className}`}
+      onClick={replayAnimation}
+      title="Click to replay signature animation"
+      className={`hijaz-wordmark-container hijaz-vector-wordmark ${isVisible ? 'is-in-view is-revealed' : ''} ${className}`}
       style={{ width, ...style }}
     >
-      <svg
-        viewBox="380 160 1420 920"
-        width="100%"
-        height="auto"
-        preserveAspectRatio="xMidYMid meet"
-        className="wordmark-vector-svg"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g
-          transform="translate(0.000000,1208.000000) scale(0.100000,-0.100000)"
-          fill="currentColor"
-        >
+      <div key={animationKey} className="hijaz-ink-stage">
+        {/* SVG Wordmark with Cinematic Ink Reveal */}
+        <div className="hijaz-ink-revealer">
+          <svg
+            viewBox="380 160 1420 920"
+            width="100%"
+            height="auto"
+            preserveAspectRatio="xMidYMid meet"
+            className="wordmark-vector-svg"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g
+              transform="translate(0.000000,1208.000000) scale(0.100000,-0.100000)"
+              fill="currentColor"
+            >
           
 <path d="M7383 10284 c-26 -20 -39 -24 -67 -18 -32 5 -37 3 -55 -27 -17 -28
 -27 -34 -58 -35 -24 0 -41 -7 -50 -20 -7 -11 -29 -37 -49 -59 -20 -22 -43 -55
@@ -269,8 +289,20 @@ m-48 -111 c-10 -9 -11 -8 -5 6 3 10 9 15 12 12 3 -3 0 -11 -7 -18z"/>
 <path d="M4230 3125 c-10 -12 -10 -18 0 -29 16 -20 42 -8 38 17 -4 26 -21 32
 -38 12z"/>
 
-        </g>
-      </svg>
+            </g>
+          </svg>
+        </div>
+
+        {/* Luminous Traveling Pen Tip / Ink Spark (commented out) */}
+        {/* {isVisible && (
+          <div className="ink-pen-tip" aria-hidden="true">
+            <span className="ink-spark-core" />
+            <span className="ink-spark-glow" />
+            <span className="ink-spark-ring" />
+          </div>
+        )} */}
+      </div>
     </div>
   );
 }
+

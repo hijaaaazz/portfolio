@@ -3425,51 +3425,223 @@ html, body {
   align-items: center;
 }
 
-/* Vector SVG Wordmark with Scroll-Reveal Blur-Fade */
+/* ==========================================================================
+   Cinematic Ink Sweep Signature Animation & Glowing Stylus
+   ========================================================================== */
+.hijaz-wordmark-container,
 .hijaz-vector-wordmark {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: min(580px, 86vw);
   max-width: 100%;
   margin: 0.25rem auto 1.5rem;
   color: var(--text-pure);
-  opacity: 0;
-  filter: blur(12px);
-  transform: translateY(32px) scale(0.96);
-  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              filter 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.9s cubic-bezier(0.16, 1, 0.3, 1),
-              color 0.35s ease;
-  will-change: opacity, filter, transform;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  cursor: pointer;
   user-select: none;
+  transform-origin: center center;
+  transition: transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
+              color 0.3s ease,
+              filter 0.35s ease;
+  will-change: transform, filter, color;
 }
 
-.hijaz-vector-wordmark.is-revealed {
-  opacity: 1;
-  filter: blur(0px) drop-shadow(0 0 25px rgba(255, 255, 255, 0.1));
-  transform: translateY(0) scale(1);
-}
-
+/* Interactive Hover: Zoom in, tilt, and specular neon green glow */
+.hijaz-wordmark-container:hover,
 .hijaz-vector-wordmark:hover {
   color: var(--neon-green);
-  filter: blur(0px) drop-shadow(0 0 35px var(--neon-green-glow));
-  transform: translateY(-4px) scale(1.2) rotate(-3deg);
+  /* filter: drop-shadow(0 0 35px var(--neon-green-glow)) drop-shadow(0 0 16px var(--neon-green)); */
+  transform: translateY(-6px) scale(1.8) rotate(-5deg);
 }
 
-[data-theme="light"] .hijaz-vector-wordmark.is-revealed {
-  filter: blur(0px) drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
+.hijaz-wordmark-container:active,
+.hijaz-vector-wordmark:active {
+  transform: translateY(-3px) scale(1.04) rotate(-1deg);
+  transition-duration: 0.15s;
 }
 
+[data-theme="light"] .hijaz-wordmark-container:hover,
 [data-theme="light"] .hijaz-vector-wordmark:hover {
   color: var(--neon-green);
-  filter: blur(0px) drop-shadow(0 6px 22px rgba(0, 222, 81, 0.3));
+  filter: drop-shadow(0 8px 30px rgba(0, 222, 81, 0.45));
+  transform: translateY(-6px) scale(1.08) rotate(-2deg);
+}
+
+.hijaz-ink-stage {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Fluid Horizontal Ink Reveal */
+.hijaz-ink-revealer {
+  width: 100%;
+  clip-path: inset(0 100% 0 0);
+  opacity: 0;
+  filter: blur(6px);
+  will-change: clip-path, opacity, filter;
+}
+
+.hijaz-wordmark-container.is-in-view .hijaz-ink-revealer,
+.hijaz-vector-wordmark.is-revealed .hijaz-ink-revealer {
+  animation: cinematicInkSweep 1.8s cubic-bezier(0.25, 1, 0.35, 1) forwards 0.2s;
+}
+
+@keyframes cinematicInkSweep {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.1;
+    filter: blur(6px);
+  }
+  15% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+    filter: blur(0px) drop-shadow(0 0 25px rgba(255, 255, 255, 0.1));
+  }
+}
+
+[data-theme="light"] .hijaz-wordmark-container.is-in-view .hijaz-ink-revealer,
+[data-theme="light"] .hijaz-vector-wordmark.is-revealed .hijaz-ink-revealer {
+  animation: cinematicInkSweepLight 1.8s cubic-bezier(0.25, 1, 0.35, 1) forwards 0.2s;
+}
+
+@keyframes cinematicInkSweepLight {
+  0% {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.1;
+    filter: blur(6px);
+  }
+  15% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+    filter: blur(0px) drop-shadow(0 4px 14px rgba(0, 0, 0, 0.08));
+  }
 }
 
 .wordmark-vector-svg {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* Glowing Pen Tip / Ink Spark that travels along the writing edge */
+.ink-pen-tip {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  top: 50%;
+  left: 0%;
+  pointer-events: none;
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  will-change: left, top, opacity, transform;
+}
+
+.hijaz-wordmark-container.is-in-view .ink-pen-tip,
+.hijaz-vector-wordmark.is-revealed .ink-pen-tip {
+  opacity: 1;
+  animation:
+    penTipTravel 1.8s cubic-bezier(0.25, 1, 0.35, 1) forwards 0.2s,
+    penTipBob 0.32s ease-in-out infinite alternate,
+    penTipFadeOut 0.4s ease-out forwards 1.95s;
+}
+
+@keyframes penTipTravel {
+  0% {
+    left: 0%;
+    top: 50%;
+  }
+  20% {
+    top: 38%;
+  }
+  45% {
+    top: 56%;
+  }
+  65% {
+    top: 42%;
+  }
+  85% {
+    top: 52%;
+  }
+  100% {
+    left: 100%;
+    top: 48%;
+  }
+}
+
+@keyframes penTipBob {
+  0% {
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+@keyframes penTipFadeOut {
+  to {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+}
+
+.ink-spark-core {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #ffffff, 0 0 16px var(--neon-green, #00de51);
+}
+
+.ink-spark-glow {
+  position: absolute;
+  width: 36px;
+  height: 36px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, var(--neon-green, #00de51) 0%, rgba(0, 222, 81, 0.35) 45%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(2px);
+}
+
+.ink-spark-ring {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1.5px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  animation: sparkPulse 0.45s ease-out infinite alternate;
+}
+
+@keyframes sparkPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.7);
+    opacity: 0.9;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.35);
+    opacity: 0.15;
+  }
 }
 
 .footer-bottom-bar {
